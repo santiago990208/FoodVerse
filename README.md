@@ -1,8 +1,13 @@
 # FoodVerse
 
+
 ## Connection with ssh in Windows PowerShell to OCI instance 
+
+Open PowerShell with admin privilages
+<key_path> = the path where you private key is located
+<IP_address> = The public IP address for the instance.
 ```
-$path = "<key path>"
+$path = "<key_path>"
 icacls.exe $path /reset
 icacls.exe $path /GRANT:R "$($env:USERNAME):(R)"
 icacls.exe $path /inheritance:r
@@ -10,7 +15,7 @@ ssh -i $path opc@<IP_address>
 ```
 
 ## Configuration NGINX in OCI
-
+<IP_address> = The public IP address for the instance.
 ```
 ## Check for packages updates before installing NGINX packages
 sudo dnf update && sudo dnf upgrade
@@ -129,3 +134,23 @@ Open a browser and navigate to http://<IP_address>/. The browser should redirect
 Most browsers display a security risk warning when accessing a site that uses a self-signed certificate. You can accept the risk warning in this case to confirm that the site is working as expected.
 
 The warning is not displayed if you use a CA signed certificate.
+
+## Deploy the project
+
+Install git for cloning the repository
+```
+sudo dnf install git
+```
+Remove the dummy files
+/srv/website
+```
+cd /srv/website/
+sudo rm index.html
+```
+Clone our metaverse room from Github
+(make sure to keep the “.” as we want to have the content of the repo in our folder)
+```
+sudo git clone https://github.com/oracle-devrel/devo-tron-metaverse-room.git .
+```
+check everthing is coorect connecting to:
+https://<IP_address>/

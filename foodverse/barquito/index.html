@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>El Barquito</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="FoodVerse">
+    <meta name="author" content="Santiago Botero">
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene renderer="colorManagement: true;">
+      <a-assets>
+        <img id="playa" src="assets/playa.png">
+        <img id="cielo" src="assets/cielo.png">
+        <!-- <img id="pdx" src="portland.png"> -->
+        <a-asset-item id="pared1" src="assets/Pared1.gltf"></a-asset-item>
+        <a-asset-item id="pared2" src="assets/Pared2.gltf"></a-asset-item>
+        <a-asset-item id="mesa1" src="assets/Mesa1.gltf"></a-asset-item>
+        <a-asset-item id="piso" src="assets/Piso.gltf"></a-asset-item>
+      </a-assets>
+
+      
+      <a-cylinder id="ground" src="#playa" radius="30" height="0"></a-cylinder>
+      <a-sky id="background" src="#cielo" theta-length="90" radius="30"></a-sky>
+
+      <a-gltf-model src="#pared1" scale="0.15 0.15 0.15"></a-gltf-model>
+      <a-gltf-model src="#pared2" scale="0.15 0.15 0.15"></a-gltf-model>
+      <a-gltf-model src="#mesa1" scale="0.15 0.15 0.15"></a-gltf-model>
+      <a-gltf-model src="#piso" scale="0.15 0.15 0.15"></a-gltf-model>
+      <!-- <a-entity id="3dpared1" gltf-model="#pared1" rotation="0 0 0" position="0 0 0" scale="0.2 0.2 0.2"></a-entity> -->
+
+      <!-- <a-image src="#pdx" width="10" height="5" position="-2 1.2 -3"
+               scale="0.2 0.2 0.2"></a-image> -->
+    </a-scene>
+  </body>
+</html>

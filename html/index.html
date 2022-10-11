@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <title>El Barquito Restaurant XR</title>
+    <!-- calling external libraries START -->
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <link href="./css/style.css" rel="stylesheet">
+    <!-- calling external libraries END -->
+
+<body>
+    <!-- entry button and bg music interaction START -->
+    <div id="loadingScreen"><button class="button">Enter</button></div>
+    <!-- entry button and bg music interaction END -->
+
+    <!-- 3D scene START -->
+    <a-scene fog="type: linear; color: #AAA" background="color: #88E3F3" cursor="rayOrigin: mouse" renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true; maxCanvasWidth: 1920; maxCanvasHeight: 1920;">
+
+    <!-- navMesh asset loader START -->
+    <a-asset-item id="CircleNavMesh" src="./navmesh/navmeshcircle.gltf"></a-asset-item>
+    <!-- navMesh asset loader END -->
+
+    <!-- asset loader START -->
+    <a-assets>
+    <!-- <img id="larry" src="./assets/2DAssets/larry.png"> -->
+    <item id="TronFloor" src="./assets/3DModels/Piso.gltf">
+    <!-- <item id="barquito" src="./assets/3DModels/Barquito.glb"> -->
+    <item id="pared1" src="./assets/3DModels/Pared1.gltf">
+    <item id="pared2" src="./assets/3DModels/Pared2.gltf">
+    <item id="mesa1" src="./assets/3DModels/Mesa1.gltf">
+    <item id="mesa2" src="./assets/3DModels/Mesa1.gltf">
+    <!-- <item id="TronFloor" src="https://objectstorage.us-ashburn-1.oraclecloud.com/p/XyoA-eEqMpnQT2B8wUzv9A-YsBQaFQMmKvSdUOnj3S3LBoJaSeR3eEXRGIQSDpQF/n/idhjdsutxi42/b/bucket-20221010-1512/o/floorMesh.gltf"> -->
+    <item id="logo" src="./assets/3DModels/oLogo.gltf">
+    <!-- <item id="larryFrame" src="./assets/3DModels/larry.gltf"> -->
+    <audio id="bgSoundtrack" src="./assets/Audio/tronDay.m4v" preload="auto"></audio>
+    </a-assets>
+    <!-- asset loader END -->
+
+    <!-- 3D asset scene placement START -->
+    <a-entity id="env">
+    <a-entity id="3dFloor" gltf-model="#TronFloor" rotation="0 0 0" position="0 0.01 0" scale="0.2 0.2 0.2"></a-entity>
+    <a-entity id="ologo" gltf-model="#logo" rotation="90 0 0" position="0 10 0" scale="1 1 1" animation="property: rotation;from : 90 90 0; to: 90 450 0; loop: true;easing: linear; dur: 100000"></a-entity>
+    <a-entity id="3dpared1" gltf-model="#pared1" rotation="0 0 0" position="0 0 0" scale="0.2 0.2 0.2"></a-entity>
+    <a-entity id="3dpared2" gltf-model="#pared2" rotation="0 0 0" position="0 0 0" scale="0.2 0.2 0.2"></a-entity>
+    <a-entity id="3dmesa1" gltf-model="#mesa1" rotation="0 0 0" position="0 0 0" scale="0.2 0.2 0.2"></a-entity>
+    <a-entity id="3dmesa2" gltf-model="#mesa2" rotation="0 0 0" position="3 0 0" scale="0.2 0.2 0.2"></a-entity>
+    <!-- <a-entity id="larryFrame" gltf-model="#larryFrame" rotation="-90 90 0" position="28 2 0" scale="1 1 1" animation="property: position;from : 30 2 -30; to: 30 2 30; loop: true;easing: linear; dur: 100000"></a-entity> -->
+    </a-entity>
+    <!-- 3D asset scene placement END -->
+    
+    <!-- primitives placement START -->
+        <!-- <a-entity id="MovingPictures" postion="0 10 0" animation="property: rotation;from : 0 0 0; to: 0 360 0; loop: true;easing: linear; dur: 100000">
+        <a-box position="0 10 -5" rotation="0 45 45" scale="2 2 2" src="#larry" animation="property: rotation;from : 0 0 0; to: 45 270 360; loop: true;easing: linear; dur: 100000"></a-box>
+        </a-entity> -->
+    <!-- primitives placement END -->
+   
+    <!-- portals placement START -->
+    <!-- <a-link id="Blender on OCI" href="https://github.com/oracle-devrel/terraform-oci-blender" title="Blender on OCI" geometry="primitive: circle; segments: 64" material="shader: portal; side: double; backgroundColor: #7fe7f0; strokeColor: #26526a" link="backgroundColor: #7fe7f0; borderColor: #26526a" position="-30 2 0" rotation="0 -270 0"></a-link>
+    <a-link id="Blender Video" href="https://www.youtube.com/watch?v=amqxaw2Ujn4" title="Blender Video" geometry="primitive: circle; segments: 64" material="shader: portal; side: double; backgroundColor: #7fe7f0; strokeColor: #26526a" link="backgroundColor: #7fe7f0; borderColor: #26526a" position="-30 2 20" rotation="0 -270 0"></a-link>
+    <a-link id="Slack" href="https://bit.ly/devrel-xrlabs-channel" title="Slack" geometry="primitive: circle; segments: 64" material="shader: portal; side: double; backgroundColor: #7fe7f0; strokeColor: #26526a" link="backgroundColor: #7fe7f0; borderColor: #26526a" position="-30 2 -20" rotation="0 -270 0"></a-link> -->
+    <!-- portals placement END -->
+
+
+    <!-- navMes placement START-->
+      <!-- <a-entity gltf-model="#CircleNavMesh" position="0 -0.01 0" scale="60 1 60" visible="false" nav-mesh></a-entity> -->
+    <!-- navMes placement END-->
+
+    <!-- navMes cameraRig placement START-->
+    <a-entity id="cameraRig" position="-6.8 0 0" rotation="0 -90 0" movement-controls="constrainToNavMesh: true">
+    
+    <!-- camera START-->
+    <a-entity camera id="camera" look-controls position="0 1.6 0">
+    <!-- <a-cursor color="#4febf2"></a-cursor> -->
+    </a-entity>
+    <!-- camera END-->
+    </a-entity> 
+    <!-- navMes cameraRig placement END-->
+
+    </a-scene>
+    <!-- 3D scene END -->
+
+    <script src="./js/music.js"></script>
+</body>
+</html>

@@ -84,12 +84,11 @@ See https://docs.oracle.com/en/operating-systems/oracle-linux/certmanage/ for mo
 
 For testing and dev you can use a self-signed certificate.
 ```
-##  To create the certificate and key
-openssl req -new -x509 -days 30 -nodes -newkey rsa:2048 -keyout server.key\
--out server.crt -subj "/C=US/ST=Ca/L=Sunnydale/CN=<IP_address>"
-
 ## Create a directory to store the keys and certificates for NGINX
 sudo mkdir -p /etc/pki/nginx/private
+
+##  To create the certificate and key
+openssl req -new -x509 -days 30 -nodes -newkey rsa:2048 -keyout server.key -out server.crt -subj "/C=US/ST=Ca/L=Sunnydale/CN=<IP_address>"
 
 ##Copy the certificate to /etc/pki/nginx/server.crt and the key file to /etc/pki/nginx/private/server.key
 sudo cp server.crt /etc/pki/nginx/

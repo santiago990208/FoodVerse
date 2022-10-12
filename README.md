@@ -123,7 +123,7 @@ EOF
 sudo systemctl restart nginx
 
 ## Configure firewall rules
-sudo firewall-cmd --add-service=http --permanent
+sudo firewall-cmd --add-service=https --permanent
 sudo firewall-cmd --reload
 ```
 

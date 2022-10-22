@@ -1,97 +1,66 @@
 import "./sidebar.css"
 import { Link } from "react-router-dom";
 import {
-    AttachMoney,
-    BarChart,
-    ChatBubbleOutline,
-    DynamicFeed,
+    Fastfood,
     LineStyle,
-    MailOutline,
-    PermIdentity,
-    Report,
-    Storefront,
-    Timeline,
-    TrendingUp,
-    WorkOutline
+    PeopleOutline,
+
 }
     from "@material-ui/icons";
+import { DiscountOutlined, MopedOutlined, ProductionQuantityLimitsOutlined } from "@mui/icons-material";
 
 export default function Sidebar() {
     return (
         <div className="sidebar">
             <div className="sidebarWrapper">
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Dashboard</h3>
+                    <h3 className="sidebarTitle">Administración</h3>
                     <ul className="sidebarList">
-                        <li className="sidebarListItem active">
-                            <LineStyle className="sidebarIcon" />
-                            Home
-                        </li>
-                        <li className="sidebarListItem">
-                            <Timeline className="sidebarIcon" />
-                            Analytics
-                        </li>
-                        <li className="sidebarListItem">
-                            <TrendingUp className="sidebarIcon" />
-                            Sales
-                        </li>
+                        <Link to="/" className="link">
+                            <li className="sidebarListItem active">
+                                <LineStyle className="sidebarIcon" />
+                                Home
+                            </li>
+                        </Link>
+                        <Link to="/users" className="link">
+                            <li className="sidebarListItem">
+                                <PeopleOutline className="sidebarIcon" />
+                                Clientes
+                            </li>
+                        </Link>
+                        <Link to="/products" className="link">
+                            <li className="sidebarListItem">
+                                <ProductionQuantityLimitsOutlined className="sidebarIcon" />
+                                Productos
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Quick Menu</h3>
+                    <h3 className="sidebarTitle">Usuarios</h3>
                     <ul className="sidebarList">
-                        <li className="sidebarListItem">
-                            <PermIdentity className="sidebarIcon" />
-                            Users
-                        </li>
-                        <li className="sidebarListItem">
-                            <Storefront className="sidebarIcon" />
-                            Products
-                        </li>
-                        <li className="sidebarListItem">
-                            <AttachMoney className="sidebarIcon" />
-                            Transactions
-                        </li>
-                        <li className="sidebarListItem">
-                            <BarChart className="sidebarIcon" />
-                            Reports
-                        </li>
+                        <Link to="/coupons" className="link">
+                            <li className="sidebarListItem">
+                                <DiscountOutlined className="sidebarIcon" />
+                                Cupones
+                            </li>
+                        </Link>
+
                     </ul>
                 </div>
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Notifications</h3>
+                    <h3 className="sidebarTitle">Órdenes</h3>
                     <ul className="sidebarList">
-                        <li className="sidebarListItem">
-                            <MailOutline className="sidebarIcon" />
-                            Mail
-                        </li>
-                        <li className="sidebarListItem">
-                            <DynamicFeed className="sidebarIcon" />
-                            Feedback
-                        </li>
-                        <li className="sidebarListItem">
-                            <ChatBubbleOutline className="sidebarIcon" />
-                            Messages
-                        </li>
+                        <Link to="/ordenes" className="link">
+                            <li className="sidebarListItem">
+                                <Fastfood className="sidebarIcon" />
+                                Órdenes
+                            </li>
+                        </Link>
+
                     </ul>
                 </div>
-                <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Staff</h3>
-                    <ul className="sidebarList">
-                        <li className="sidebarListItem">
-                            <WorkOutline className="sidebarIcon" />
-                            Manage
-                        </li>
-                        <li className="sidebarListItem">
-                            <Timeline className="sidebarIcon" />
-                            Analytics
-                        </li>
-                        <li className="sidebarListItem">
-                            <Report className="sidebarIcon" />
-                            Reports
-                        </li>
-                    </ul>
-                </div>
+
             </div>
         </div>
     );

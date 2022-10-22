@@ -1,251 +1,218 @@
 export const userData = [
     {
       name: "Jan",
-      "Active User": 4000,
+      "Promedio": 6000,
     },
     {
       name: "Feb",
-      "Active User": 3000,
+      "Promedio": 3000,
     },
     {
       name: "Mar",
-      "Active User": 5000,
+      "Promedio": 5000,
     },
     {
       name: "Apr",
-      "Active User": 4000,
+      "Promedio": 4000,
     },
     {
       name: "May",
-      "Active User": 3000,
+      "Promedio": 3000,
     },
     {
       name: "Jun",
-      "Active User": 2000,
+      "Promedio": 2000,
     },
     {
       name: "Jul",
-      "Active User": 4000,
+      "Promedio": 4000,
     },
     {
       name: "Agu",
-      "Active User": 3000,
+      "Promedio": 3000,
     },
     {
       name: "Sep",
-      "Active User": 4000,
+      "Promedio": 4000,
     },
     {
       name: "Oct",
-      "Active User": 1000,
+      "Promedio": 1000,
     },
     {
       name: "Nov",
-      "Active User": 4000,
+      "Promedio": 4000,
     },
     {
       name: "Dec",
-      "Active User": 3000,
+      "Promedio": 3000,
     },
   ];
 
+export const saleData = [
+  {
+    producto: 'Hamburguesa',
+    Ventas: 200,
+  },
+  {
+    producto: 'Papas',
+    Ventas: 100,
+  },
+  {
+    producto: 'Pizza',
+    Ventas: 80,
+  },
+]
   export const productData = [
     {
       name: "Jan",
-      "Sales": 4000,
+      "Promedio": 4000,
     },
     {
       name: "Feb",
-      "Sales": 3000,
+      "Promedio": 3000,
     },
     {
       name: "Mar",
-      "Sales": 5000,
+      "Promedio": 5000,
     },
   ];
 
   export const userRows = [
     {
       id: 1,
-      username: "Jon Snow",
+      nombre: "Andres",
+      apellido: "Ramirez",
+      ubicacion: "Bogotá",
+      correo: "jon@gmail.com",
+      telefono: "312567656",
       avatar:
         "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
     },
     {
       id: 2,
-      username: "Jon Snow",
+      nombre: "Andres",
+      apellido: "Ramirez",
+      ubicacion: "Bogotá",
+      correo: "jon@gmail.com",
+      telefono: "312567656",
       avatar:
         "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
     },
     {
       id: 3,
-      username: "Jon Snow",
+      nombre: "Andres",
+      apellido: "Ramirez",
+      ubicacion: "Bogotá",
+      correo: "jon@gmail.com",
+      telefono: "312567656",
       avatar:
         "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
     },
-    {
-      id: 4,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
-    },
-    {
-      id: 5,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
-    },
-    {
-      id: 6,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
-    },
-    {
-      id: 7,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
-    },
-    {
-      id: 8,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
-    },
-    {
-      id: 9,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
-    },
-    {
-      id: 10,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      transaction: "$120.00",
-    },
+   
   ];
 
   export const productRows = [
     {
       id: 1,
-      name: "Apple Airpods",
+      nombre: "Hamburguesa",
       img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+        "https://www.pequerecetas.com/wp-content/uploads/2013/07/hamburguesas-caseras-receta.jpg",
+      descripcion: "Hamburguesa en doble carne",
+      precio: "$12.000",
     },
     {
       id: 2,
-      name: "Apple Airpods",
+      nombre: "Papas",
       img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+        "https://www.eltiempo.com/files/image_1200_680/uploads/2021/04/15/6078c68c2f49b.jpeg",
+      descripcion: "Papas fritas",
+      precio: "$12.000",
     },
     {
       id: 3,
-      name: "Apple Airpods",
+      nombre: "Hamburguesa",
       img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+        "https://www.pequerecetas.com/wp-content/uploads/2013/07/hamburguesas-caseras-receta.jpg",
+      descripcion: "Hamburguesa en doble carne",
+      precio: "$12.000",
     },
     {
       id: 4,
-      name: "Apple Airpods",
+      nombre: "Hamburguesa",
       img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+        "https://www.pequerecetas.com/wp-content/uploads/2013/07/hamburguesas-caseras-receta.jpg",
+      descripcion: "Hamburguesa en doble carne",
+      precio: "$12.000",
+    },
+    
+  ];
+  export const cuponRows = [
+    {
+      id: 1,
+      nombre: "Cupon_01",
+      descripcion: "Cupon 01",
+      valor: "$12.000",
+      codigo: "COD_01X",
     },
     {
-      id: 5,
-      name: "Apple Airpods",
-      img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+      id: 2,
+      nombre: "Cupon_01",
+      descripcion: "Cupon 01",
+      valor: "$12.000",
+      codigo: "COD_01X",
     },
     {
-      id: 6,
-      name: "Apple Airpods",
-      img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+      id: 3,
+      nombre: "Cupon_01",
+      descripcion: "Cupon 01",
+      valor: "$12.000",
+      codigo: "COD_01X",
+    },
+    
+    
+  ];
+
+  export const orderRow = [
+    {
+      id: 1,
+      cliente: "Andres Ramirez",
+      cupon: "N/A",
+      Total_orden: "$50.000",
+      status: "Activo",
+    },
+    
+    {
+      id: 2,
+      cliente: "Andres Ramirez",
+      cupon: "N/A",
+      Total_orden: "$50.000",
+      status: "Carrito",
     },
     {
-      id: 7,
-      name: "Apple Airpods",
-      img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+      id: 3,
+      cliente: "Andres Ramirez",
+      cupon: "N/A",
+      Total_orden: "$50.000",
+      status: "Entregado",
     },
     {
-      id: 8,
-      name: "Apple Airpods",
-      img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+      id: 2,
+      cliente: "Andres Ramirez",
+      cupon: "N/A",
+      Total_orden: "$50.000",
+      status: "Cancelado",
     },
+    
+  ];
+  export const orderProductRow = [
     {
-      id: 9,
-      name: "Apple Airpods",
+      id: 1,
+      nombre: "Hamburguesa",
       img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
+        "https://www.pequerecetas.com/wp-content/uploads/2013/07/hamburguesas-caseras-receta.jpg",
+      cantidad: "2",
+      total_producto: "$50.000",
     },
-    {
-      id: 10,
-      name: "Apple Airpods",
-      img:
-        "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      stock: 123,
-      status: "active",
-      price: "$120.00",
-    },
+    
   ];

@@ -8,6 +8,17 @@ In the project directory, you can run:
 
 ### `npm start`
 
+before to start the project is necessary to install the following libraries:
+
+
+- npm i react-router-dom
+- npm install @mui/material @emotion/react @emotion/styled
+- npm install @material-ui/core
+- npm install @mui/x-data-grid
+- npm install @mui/icons-material
+- npm install @material-ui/icons
+- npm install recharts
+
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
@@ -29,17 +40,9 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `To run`
 
-Run in the following order:
 
-- npm i react-router-dom
-- npm install @mui/material @emotion/react @emotion/styled
-- npm install @material-ui/core
-- npm install @mui/x-data-grid
-- npm install @mui/icons-material
-- npm install @material-ui/icons
-- npm install recharts
+
 
 ### `To run deployed`
 - npm install -g serve

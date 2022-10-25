@@ -7,21 +7,20 @@
     <meta name="author" content="Santiago Botero">
     <title>Busqueda del tesoro</title>
     <meta name="description" content="demo: aframe-maze-component" />
-    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
-    <script src="https://unpkg.com/aframe-look-at-component@0.6.0/dist/aframe-look-at-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-maze-component@0.1.24/dist/aframe-maze-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-maze-component/dist/aframe-maze-component.min.js"></script>
     <script src="../js/info-message.js"></script>
     <script src="../js/highlight.js"></script>
     <script src="../js/info-panel.js"></script>
   </head>
   <body>
-    <a-scene
+    <a-scene  physics="debug: true"
       camera-position
       environment="preset: yavapai; ground:flat;  groundTexture: walkernoise; "
-      cursor="rayOrigin: mouse; fuse: false"
-      raycaster="far: 100; objects: .raycastable"
+      raycaster="far: 1; objects: .raycastable"
       info-message="htmlSrc: #instrucciones">
       <a-assets>
         <a-asset-item id="instrucciones" src="message.html"></a-asset-item>
@@ -46,6 +45,7 @@
       <a-entity id="explorador"
         camera
         universal-controls
+        look-controls
         position="0 10.8 35"
         jump-ability
         kinematic-body>

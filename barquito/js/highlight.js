@@ -17,14 +17,14 @@ AFRAME.registerComponent('highlight', {
 
   onClick: function (evt) {
     evt.target.pause();
-    evt.target.setAttribute('material', 'color', '#046de7');
+    evt.target.setAttribute('material', 'color', 'yellow');
     this.el.addState('clicked');
     evt.target.object3D.scale.set(1.2, 1.2, 1.2);
   },
 
   onMouseEnter: function (evt) {
     var buttonEls = this.buttonEls;
-    evt.target.setAttribute('material', 'color', '#046de7');
+    evt.target.setAttribute('material', 'color', 'yellow');
     for (var i = 0; i < buttonEls.length; ++i) {
       if (evt.target === buttonEls[i]) { continue; }
       buttonEls[i].setAttribute('material', 'color', 'white');

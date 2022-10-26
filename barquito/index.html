@@ -6,205 +6,176 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="FoodVerse">
     <meta name="author" content="Santiago Botero">
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
-    <script src="/easyrtc/easyrtc.js"></script>
-    <script src="https://unpkg.com/networked-aframe@^0.10.0/dist/networked-aframe.min.js"></script>
-    <script>
-      THREE.Math = THREE.MathUtils;
-    </script>
-    <script>
-        AFRAME.registerComponent('spawn-in-circle', {
-          schema: {
-            radius: {type: 'number', default: 1}
-          },
-        
-          init: function() {
-            var el = this.el;
-            var center = el.getAttribute('position');
-        
-            var angleRad = this.getRandomAngleInRadians();
-            var circlePoint = this.randomPointOnCircle(this.data.radius, angleRad);
-            var worldPoint = {x: circlePoint.x + center.x, y: center.y, z: circlePoint.y + center.z};
-            el.setAttribute('position', worldPoint);
-        
-            var angleDeg = angleRad * 180 / Math.PI;
-            var angleToCenter = -1 * angleDeg + 90;
-            var rotationStr = '0 ' + angleToCenter + ' 0';
-            el.setAttribute('rotation', rotationStr);
-          },
-        
-          getRandomAngleInRadians: function() {
-            return Math.random()*Math.PI*2;
-          },
-        
-          randomPointOnCircle: function (radius, angleRad) {
-            x = Math.cos(angleRad)*radius;
-            y = Math.sin(angleRad)*radius;
-            return {x: x, y: y};
-          }
-        });
-    </script>
-    <script>
-      // Temporary workaround for template declaration; see issue 167
-      NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
-      NAF.schemas.getComponents = (template) => {
-        if (!NAF.schemas.hasTemplate('#head-template')) {
-          NAF.schemas.add({
-            template: '#head-template',
-            components: [
-              'position',
-              'rotation',
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="js/info-message.js"></script>
+    <script src="js/highlight.js"></script>
+    <script src="js/info-panel.js"></script>
 
-              // In this example, we don't sync the material.color itself, like the basic example;
-              // we instead sync player-info, which includes color setting + updating.
-              // (you can see an example of the other pattern in the basic.html demo)
-              'player-info'
-            ]
-          });
-        }
-
-        const components = NAF.schemas.getComponentsOriginal(template);
-        return components;
-      };
-    </script>
-    <script>
-      window.ntExample = {
-        randomColor: () => {
-          return '#' + new THREE.Color(Math.random(), Math.random(), Math.random()).getHexString();
-        }
-      };
-
-      AFRAME.registerComponent('player-info', {
-        // notice that color and name are both listed in the schema; NAF will only keep
-        // properties declared in the schema in sync.
-        schema: {
-          name: { type: 'string', default: 'user-' + Math.round(Math.random() * 10000) },
-          color: {
-            type: 'color', // btw: color is just a string under the hood in A-Frame
-            default: window.ntExample.randomColor()
-          }
-        },
-
-        init: function () {
-          this.head = this.el.querySelector('.head');
-          this.nametag = this.el.querySelector('.nametag');
-
-          this.ownedByLocalUser = this.el.id === 'player';
-          if (this.ownedByLocalUser) {
-            // populate the html overlay with the correct name on init
-            this.nametagInput = document.getElementById('username-overlay');
-            this.nametagInput.value = this.data.name;
-
-            // add the initial color to the html overlay color picker button
-            document.querySelector('button').style.backgroundColor = this.data.color;
-            document.querySelector('button').style.color = this.data.color;
-          }
-        },
-
-        // here as an example, not used in current demo. Could build a user list, expanding on this.
-        listUsers: function () {
-          console.log(
-            'userlist',
-            [...document.querySelectorAll('[player-info]')].map((el) => el.components['player-info'].data.name)
-          );
-        },
-
-        newRandomColor: function () {
-          this.el.setAttribute('player-info', 'color', window.ntExample.randomColor());
-        },
-
-        update: function () {
-          if (this.head) this.head.setAttribute('material', 'color', this.data.color);
-          if (this.nametag) this.nametag.setAttribute('value', this.data.name);
-        }
-      });
-    </script>
   </head>
   <body>
-    <button
-      id="color-changer"
-      style="z-index: 100; bottom: 24px; left: 24px; position: fixed"
-      onclick="let newColor = window.ntExample.randomColor();
-             document.getElementById('player').setAttribute('player-info', 'color', newColor); 
-             document.querySelector('button').style.backgroundColor = newColor;
-             document.querySelector('button').style.color = newColor;
-    "
-    >
-      ■
-    </button>
-    <input
-      id="username-overlay"
-      style="z-index: 100; bottom: 24px; left: 48px; position: fixed"
-      oninput="document.getElementById('player').setAttribute('player-info', 'name', this.value)"
-    />
-    <a-scene renderer="colorManagement: true;"
-    networked-scene="
-    app: myApp;
-    room: room1;
-    debug: true;
-    adapter: wseasyrtc;">
-      <a-assets>
-        <template id="rig-template">
-          <a-entity></a-entity>
-        </template>
+    <a-scene  physics="debug: true" stats
+    camera-position
+    raycaster="far: 100; objects: [link];"
+    info-message="htmlSrc: #instrucciones">
+    <a-assets>
+      <a-asset-item id="instrucciones" src="message.html"></a-asset-item>
+      <a-asset-item id="tabla-surf" src="assets/Tabla_surf.gltf"></a-asset-item>
+      <a-asset-item id="palmera" src="assets/Palmera.gltf"></a-asset-item>
+      <img id="src-camino" src="assets/piso.png" />
+      <img id="arena" src="assets/arena.jpeg" />
+      <img id="src-techo" src="assets/Techo.jpg" />
+      <img id="src-barra" src="assets/Barra.jpg" />
+      <img id="src-pared" src="assets/Paredes y columnas.jpg" />
+      <img id="src-menu" src="assets/PORTADA _MENU.png" />
+      <img id="src-cuadro1" src="assets/cuadro1.jpeg" />
+      <img id="src-cuadro2" src="assets/cuadro2.jpeg" />
+      <img id="src-logo" src="assets/logo.png" />
+             
+      <a-mixin id="col" geometry="primitive: box; width: 0.2; height: 8; depth: 0.2;" static-body ></a-mixin>
+      <a-mixin id="pared" geometry="primitive: box; width: 5.2; height: 8; depth: 0.2;" static-body ></a-mixin>
+      <a-mixin id="barra" geometry="primitive: box; width: 3.4; height: 1.7; depth: 0.5;" static-body ></a-mixin>
+      <a-mixin id="barra-mesa" geometry="primitive: box; width: 3.4; height: 0.01; depth: 0.8;" static-body ></a-mixin>
+      <a-mixin id="techo" geometry="primitive: box; width: 7; height: 0.01; depth: 13;" static-body ></a-mixin>
 
-        <template id="head-template">
-          <a-entity class="avatar" player-info>
-            <a-sphere class="head" scale="0.2 0.22 0.2"></a-sphere>
-            <a-entity class="face" position="0 0.05 0">
-              <a-sphere class="eye" color="white" position="0.06 0.05 -0.16" scale="0.04 0.04 0.04">
-                <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
-              </a-sphere>
-              <a-sphere class="eye" color="white" position="-0.06 0.05 -0.16" scale="0.04 0.04 0.04">
-                <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
-              </a-sphere>
-            </a-entity>
-              <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
-              <a-text
-              class="nametag"
-              value="?"
-              rotation="0 180 0"
-              position=".25 -.35 0"
-              side="double"
-              scale=".5 .5 .5"
-              color="#000000"
-            ></a-text>
+      <a-mixin id="menu" geometry="primitive: box; width: 3; height: 2; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-menu" geometry="primitive: box; width: 3.1; height: 2.1; depth: 0.01;"  ></a-mixin>
 
-          </a-entity>
-        </template>
-
-        <img id="playa" src="assets/playa.png">
-        <img id="cielo" src="assets/cielo.png">
-        <!-- <img id="pdx" src="portland.png"> -->
-        <a-asset-item id="pared1" src="assets/Pared1.gltf"></a-asset-item>
-        <a-asset-item id="pared2" src="assets/Pared2.gltf"></a-asset-item>
-        <a-asset-item id="mesa1" src="assets/Mesa1.gltf"></a-asset-item>
-        <a-asset-item id="piso" src="assets/Piso.gltf"></a-asset-item>
-      </a-assets>
-
-      <a-entity id="rig" movement-controls="fly:true;" spawn-in-circle="radius:3" networked="template:#rig-template;">
-        <a-entity
-          id="player"
-          camera
-          position="0 1.6 0"
-          wasd-controls
-          look-controls
-          networked="template:#head-template;"
-          visible="false"
-      ></a-entity>
+      <a-mixin id="cuadro1" geometry="primitive: box; width: 1.5; height: 2; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-cuadro1" geometry="primitive: box; width: 1.6; height: 2.1; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="cuadro2" geometry="primitive: box; width: 2; height: 1.5; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-cuadro2" geometry="primitive: box; width: 2.1; height: 1.6; depth: 0.01;"  ></a-mixin>
       
-      <a-cylinder id="ground" src="#playa" radius="30" height="0"></a-cylinder>
-      <a-sky id="background" src="#cielo" theta-length="90" radius="30"></a-sky>
+      
+      
+      <a-mixin id="techos" material="src: #src-techo"></a-mixin>
+      <a-mixin id="barras" material="src: #src-barra"></a-mixin>
+      <a-mixin id="barras-mesas" material="color: white"></a-mixin>
+      <a-mixin id="paredes" material="src: #src-pared"></a-mixin>
+      <a-mixin id="menus" material="src: #src-menu"></a-mixin>
+      <a-mixin id="img-cuadro1" material="src: #src-cuadro1"></a-mixin>
+      <a-mixin id="img-cuadro2" material="src: #src-cuadro2"></a-mixin>
+      <a-mixin id="menus" material="src: #src-menu"></a-mixin>
 
-      <a-gltf-model src="#pared1" scale="0.15 0.15 0.15"></a-gltf-model>
-      <a-gltf-model src="#pared2" scale="0.15 0.15 0.15"></a-gltf-model>
-      <a-gltf-model src="#mesa1" scale="0.15 0.15 0.15"></a-gltf-model>
-      <a-gltf-model src="#piso" scale="0.15 0.15 0.15"></a-gltf-model>
-      <!-- <a-entity id="3dpared1" gltf-model="#pared1" rotation="0 0 0" position="0 0 0" scale="0.2 0.2 0.2"></a-entity> -->
+      <a-mixin id="borders" material="color: black"></a-mixin>
 
-      <!-- <a-image src="#pdx" width="10" height="5" position="-2 1.2 -3"
-               scale="0.2 0.2 0.2"></a-image> -->
+      <a-mixin id="tablas" gltf-model="#tabla-surf"></a-mixin>
+      <a-mixin id="palmeras" gltf-model="#palmera"></a-mixin>
+
+
+    </a-assets>
+
+    
+      <a-entity camera look-controls universal-controls jump-ability kinematic-body position="0 1 0">
+      <!-- <a-entity camera look-controls universal-controls jump-ability  position="0 20 0"> -->
+        <a-entity position="0 0 -0.5"
+                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                  material="color: black; shader: flat"
+                  cursor="rayOrigin: mouse">
+          <a-animation begin="click" easing="ease-in" attribute="scale"
+               fill="forwards" from="0.2 0.2 0.2" to="1 1 1" dur="150"></a-animation>
+
+        </a-entity>
+      </a-entity>
+
+      <!-- Cubo con animacion ejemplo -->
+
+      <!-- <a-entity position="0 1 0">
+        <a-entity mixin="cube red">
+          <a-animation begin="click" attribute="rotation" to="0 360 0"
+                       easing="linear" dur="2000" fill="backwards"></a-animation>
+        </a-entity>
+      </a-entity> -->
+    
+      <!-- Columnas -->
+        <!-- Norte  -->
+        <a-entity mixin="col paredes"  position="-2.7 0 -4.2"></a-entity>
+        <a-entity mixin="col paredes" position="2.7 0 -4.2"></a-entity>
+        <a-entity mixin="col paredes" position="5.8 0 -4.2"></a-entity>
+        <!-- Sur  -->
+        <a-entity mixin="col paredes"  position="0.4 0 4.2"></a-entity>
+        <a-entity mixin="col paredes"  position="-2.7 0 4.2"></a-entity>
+        <a-entity mixin="col paredes"  position="5.8 0 4.2"></a-entity>
+        <!-- lateral  -->
+        <a-entity mixin="col paredes"  position="-2.7 0 2.3"></a-entity>
+        <a-entity mixin="col paredes"  position="5.8 0 2.3"></a-entity>
+        <a-entity mixin="col paredes"  position="-2.7 0 -2.3"></a-entity>
+        <a-entity mixin="col paredes"  position="5.8 0 -2.3"></a-entity>
+
+
+        <!-- Columnas Techo-->
+        <a-box mixin="paredes"width="8.7" height="0.2" depth="0.2" position="1.55 4.1 4.2" static-body></a-box>
+        <a-box mixin="paredes"width="8.7" height="0.2" depth="0.2" position="1.55 4.1 -4.2" static-body></a-box>
+        <a-box mixin="paredes"width="0.2" height="0.2" depth="8.6" position="-2.7 4.1 0" static-body></a-box>
+        <a-box mixin="paredes"width="0.2" height="0.2" depth="8.6" position="5.8 4.1 0" static-body></a-box>
+
+      <!-- Barra -->
+      <a-entity mixin="barra barras"  position="1 0 -1.05"></a-entity>
+      <a-entity mixin="barra barras" position="2.5 0 -2.5" rotation="0 90 0"></a-entity>
+      <a-entity mixin="barra barras"  position="-0.5 0 -2.5" rotation="0 90 0"></a-entity>
+
+      <a-entity mixin="barra-mesa barras-mesas"  position="1 0.9 -0.995"></a-entity>
+      <a-entity mixin="barra-mesa barras-mesas" position="2.5 0.9 -2.3" rotation="0 90 0"></a-entity>
+      <a-entity mixin="barra-mesa barras-mesas"  position="-0.5 0.9 -2.3" rotation="0 90 0"></a-entity>
+      
+      <!-- Paredes -->
+      
+      <a-entity id="pared-cuadro" mixin="pared paredes"  position="3.1 0 4.2"></a-entity>
+        <!-- cuadros -->
+        <a-entity mixin="cuadro1 img-cuadro1"  position="4.6 2.5 4"></a-entity>
+        <a-entity mixin="border-cuadro1 borders"  position="4.6 2.5 4.1"></a-entity>
+        <a-entity mixin="cuadro2 img-cuadro2"  position="2 1.5 4"></a-entity>
+        <a-entity mixin="border-cuadro2 borders"  position="2 1.5 4.1"></a-entity>
+
+      <a-entity id="pared-menu" mixin="pared paredes" position="-0 0 -4.2"></a-entity>
+        <!-- Menu -->
+        <a-entity mixin="menu menus"  position="1 2.5 -4"></a-entity>
+        <a-entity mixin="border-menu borders"  position="1 2.5 -4.1"></a-entity>
+
+        <!-- Logos -->
+        <a-image src="#src-logo" scale="3 3 3" rotation="0 180 0" position="-0.4 2 -4.6"></a-image>
+
+
+      <!-- Techo -->
+      <a-entity mixin="techo techos"  position="1.7 5 -3"  rotation="0 90 -30"></a-entity>
+      <a-entity mixin="techo techos"  position="1.7 5 3"  rotation="0 90 30"></a-entity>
+
+      <!-- Piso -->
+      <a-plane id="arena"
+      static-body
+      rotation="-90 0 0"
+      position="0 0 0"
+      width="100"
+      height="100"
+      src="#arena"
+      ></a-plane>
+      <!-- Piso restaurante -->
+      <a-plane id="piso-restaurante"
+      rotation="-90 0 0"s
+      position="2.7 0.1 2"
+      width="32"
+      height="16"
+      src="#src-camino"
+      ></a-plane>
+
+      <!-- Tablas surf -->
+      <a-entity mixin="tablas" position="30 0 -14" scale="1 1.4 1"static-body></a-entity>
+      <a-entity mixin="tablas" position="30 0 -13" scale="1 1.2 1"static-body></a-entity>
+      <a-entity mixin="tablas" position="30 0 -12" scale="1 1 1"static-body></a-entity>
+      <!-- Palmeras -->
+      <a-entity mixin="palmeras" position="40 0 -9" scale="1 1 1"></a-entity>
+      <a-entity mixin="palmeras" position="40 0 -3" scale="1 1.2 1"></a-entity>
+      <a-entity mixin="palmeras" position="40 0 3" scale="1 1 1"></a-entity>
+
+      
+
+    
+    
+      <!-- Dynamic box -->
+
+      <a-sphere dynamic-body position="5 120 0" radius="0.5" ></a-sphere> 
+    
     </a-scene>
   </body>
 </html>

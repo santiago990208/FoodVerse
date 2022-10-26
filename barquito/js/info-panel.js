@@ -13,7 +13,7 @@ AFRAME.registerComponent('info-panel', {
       kazetachinuButton: {
         title: 'CUPON',
         // imgEl: document.querySelector('#kazetachinucuponImage'),
-        imgEl: document.querySelector('#kazetachinucuponImage'),
+        imgEl: document.querySelector('#CuponImage'),
         description: 'descripcion del cupon',
         code: 'codigo_del_cupon',
       }
@@ -43,12 +43,11 @@ AFRAME.registerComponent('info-panel', {
     this.fadeBackgroundEl.object3D.visible = true;
 
     if (this.cuponImageEl) { this.cuponImageEl.object3D.visible = false; }
-    this.cuponImageEl = cuponInfo.imgEl;
-    this.cuponImageEl.object3D.visible = true;
 
-    this.cuponTitleEl.setAttribute('text', 'value', cuponInfo.title);
-    this.cuponDescriptionEl.setAttribute('text', 'value', cuponInfo.description);
-    this.cuponCodeEl.setAttribute('text', 'value', cuponInfo.code);
+
+    // this.cuponTitleEl.setAttribute('text', 'value', cuponInfo.title);
+    // this.cuponDescriptionEl.setAttribute('text', 'value', cuponInfo.description);
+    // this.cuponCodeEl.setAttribute('text', 'value', cuponInfo.code);
   },
 
   onBackgroundClick: function (evt) {

@@ -12,7 +12,7 @@ export default function Product() {
         <div className="product">
             <div className="productTitleContainer">
                 <h1 className="productTitle">Cupon</h1>
-                <Link to="/newCupon">
+                <Link to="FoodVerse/admin/newCupon">
                     <button className="productAddButton">Nuevo</button>
                 </Link>
             </div>

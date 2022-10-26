@@ -21,18 +21,18 @@ function App() {
       <div className="container">
         <Sidebar />
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/users" element={<UserList />} />
-          <Route path="/user/:userID" element =  {<User/>} />
-          <Route path="/newUser" element =  {<NewUser/>} />
-          <Route path = "/ordenes" element = {<OrderList />} />
-          <Route path = "/orden/:ordenID" element = {<Orden />} />
-          <Route path = "/products" element = {<ProductList/>} />
-          <Route path="/product/:productID" element =  {<Product/>} />
-          <Route path = "/newProduct" element = {<NewProduct />} />
-          <Route path = "/coupons" element = {<CuponList />} />
-          <Route path = "/cupon/:cuponID" element = {<Cupon/>} />
-          <Route path = "/newCupon" element = {<NewCupon/>} />
+          <Route exact path="FoodVerse/admin/" element={<Home />} />
+          <Route path="FoodVerse/admin/users" element={<UserList />} />
+          <Route path="FoodVerse/admin/user/:userID" element =  {<User/>} />
+          <Route path="FoodVerse/admin/newUser" element =  {<NewUser/>} />
+          <Route path = "FoodVerse/admin/ordenes" element = {<OrderList />} />
+          <Route path = "FoodVerse/admin/orden/:ordenID" element = {<Orden />} />
+          <Route path = "FoodVerse/admin/products" element = {<ProductList/>} />
+          <Route path="FoodVerse/admin/product/:productID" element =  {<Product/>} />
+          <Route path = "FoodVerse/admin/newProduct" element = {<NewProduct />} />
+          <Route path = "FoodVerse/admin/coupons" element = {<CuponList />} />
+          <Route path = "FoodVerse/admin/cupon/:cuponID" element = {<Cupon/>} />
+          <Route path = "FoodVerse/admin/newCupon" element = {<NewCupon/>} />
 
         </Routes>
       </div>

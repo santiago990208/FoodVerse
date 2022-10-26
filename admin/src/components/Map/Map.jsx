@@ -1,17 +1,19 @@
+/* global google */
 import "./map.css"
-
-import { GoogleMap, useLoadScript, HeatmapLayer } from "@react-google-maps/api";
+//import GoogleMapReact from 'google-map-react';
+import { GoogleMap, LoadScript, HeatmapLayer } from "@react-google-maps/api";
 
 export default function Map({ title }) {
-    const { isLoaded } = useLoadScript({
-        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    });
 
-    if (!isLoaded) return <div>Loading...</div>
     return (
         <div className="map">
             <h3 className="mapTitle">{title}</h3>
-            <MapLoaded></MapLoaded>
+            <LoadScript
+                googleMapsApiKey="AIzaSyAd9_yrW4nXtaDqzwQfQ9-W5elh-s9lt3w"
+                libraries={["visualization"]}
+            >
+                <MapLoaded></MapLoaded>
+            </LoadScript>
         </div>
     );
 
@@ -19,7 +21,11 @@ export default function Map({ title }) {
 
 function MapLoaded() {
     return <GoogleMap zoom={12} center={{ lat: -18.4746, lng: -70.29792 }} mapContainerClassName="mapSize" >
-        
+        <HeatmapLayer
+            data={
+                new google.maps.LatLng(37.782, -122.447)
+            }
+        />
     </GoogleMap>;
 
 }

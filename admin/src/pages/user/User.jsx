@@ -18,7 +18,7 @@ import {
       <div className="user">
         <div className="userTitleContainer">
           <h1 className="userTitle">Cliente</h1>
-          <Link to="/newUser">
+          <Link to="FoodVerse/admin/newUser">
             <button className="userAddButton">Crear</button>
           </Link>
         </div>

@@ -37,7 +37,7 @@ export default function ProductList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/orden/" + params.row.id}>
+            <Link to={"FoodVerse/admin/orden/" + params.row.id}>
               <button className="productListEdit">Ver mas</button>
             </Link>
             

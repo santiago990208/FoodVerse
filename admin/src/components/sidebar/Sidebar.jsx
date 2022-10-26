@@ -16,19 +16,19 @@ export default function Sidebar() {
                 <div className="sidebarMenu">
                     <h3 className="sidebarTitle">Administración</h3>
                     <ul className="sidebarList">
-                        <Link to="/" className="link">
+                        <Link to="FoodVerse/admin/" className="link">
                             <li className="sidebarListItem active">
                                 <LineStyle className="sidebarIcon" />
                                 Home
                             </li>
                         </Link>
-                        <Link to="/users" className="link">
+                        <Link to="FoodVerse/admin/users" className="link">
                             <li className="sidebarListItem">
                                 <PeopleOutline className="sidebarIcon" />
                                 Clientes
                             </li>
                         </Link>
-                        <Link to="/products" className="link">
+                        <Link to="FoodVerse/admin/products" className="link">
                             <li className="sidebarListItem">
                                 <ProductionQuantityLimitsOutlined className="sidebarIcon" />
                                 Productos
@@ -39,7 +39,7 @@ export default function Sidebar() {
                 <div className="sidebarMenu">
                     <h3 className="sidebarTitle">Usuarios</h3>
                     <ul className="sidebarList">
-                        <Link to="/coupons" className="link">
+                        <Link to="FoodVerse/admin/coupons" className="link">
                             <li className="sidebarListItem">
                                 <DiscountOutlined className="sidebarIcon" />
                                 Cupones
@@ -51,7 +51,7 @@ export default function Sidebar() {
                 <div className="sidebarMenu">
                     <h3 className="sidebarTitle">Órdenes</h3>
                     <ul className="sidebarList">
-                        <Link to="/ordenes" className="link">
+                        <Link to="FoodVerse/admin/ordenes" className="link">
                             <li className="sidebarListItem">
                                 <Fastfood className="sidebarIcon" />
                                 Órdenes

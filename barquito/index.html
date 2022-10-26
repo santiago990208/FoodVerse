@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="FoodVerse">
     <meta name="author" content="Santiago Botero">
-    <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras/dist/aframe-extras.min.js"></script>
     <script src="js/info-message.js"></script>
     <script src="js/highlight.js"></script>
@@ -15,7 +16,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
     <script src="/easyrtc/easyrtc.js"></script>
-    <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
+    <script>window.NAF || document.write('<script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js">\x3C/script>')</script>
     <script>
       THREE.Math = THREE.MathUtils;
     </script>
@@ -240,7 +241,7 @@
         networked="template:#head-template;"
         visible="false"
       ></a-entity> -->
-      <a-entity camera look-controls wasd-controls position="0 1 0" spawn-in-circle="radius:3" networked="template:#rig-template;">
+      <a-entity camera look-controls universal controls position="0 1 0" spawn-in-circle="radius:3" networked="template:#rig-template;">
       <!-- <a-entity camera look-controls universal-controls jump-ability  position="0 20 0"> -->
         <a-entity position="0 0 -0.5"
                   geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"

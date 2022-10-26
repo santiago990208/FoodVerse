@@ -18,7 +18,6 @@ before to start the project is necessary to install the following libraries:
 - npm install @mui/icons-material
 - npm install @material-ui/icons
 - npm install recharts
-- npm install --save google-map-react
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.

@@ -17,7 +17,7 @@
     <script src="../js/info-panel.js"></script>
   </head>
   <body>
-    <a-scene  physics="debug: true"
+    <a-scene
       camera-position
       environment="preset: yavapai; ground:flat;  groundTexture: walkernoise; "
       raycaster="far: 1; objects: .raycastable"
@@ -58,7 +58,7 @@
         position="0 10 35"
         width="2"
         height="2"
-        material="color: black"
+        material="src: assets/base.png"
       ></a-plane>
 
       <a-plane id="piso-falso"

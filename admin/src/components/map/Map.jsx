@@ -29,6 +29,9 @@ class MapContainer extends React.Component {
             zoom={13}
             initialCenter={this.props.center}
             onReady={this.handleMapReady}
+            
+
+            
           >
             <HeatMap
               positions={this.props.data}

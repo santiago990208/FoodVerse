@@ -23,7 +23,7 @@
 
   </head>
   <body>
-    <a-scene  physics="debug: true" stats
+    <a-scene
     camera-position
     raycaster="far: 100; objects: [link];"
     info-message="htmlSrc: #instrucciones">
@@ -90,7 +90,7 @@
     </a-assets>
 
     
-      <a-entity camera look-controls universal-controls jump-ability kinematic-body position="0 2 0" scale="0.5 0.5 0.5">
+      <a-entity camera look-controls universal-controls jump-ability kinematic-body position="-10 2 3" scale="0.5 0.5 0.5">
       <!-- <a-entity camera look-controls universal-controls jump-ability  position="0 20 0"> -->
         <a-entity position="0 0 -0.5"
                   geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
@@ -312,11 +312,6 @@
        <a-entity mixin="butacos" static-body position="3.2 0 -2.4" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
        <a-entity mixin="butacos" static-body position="3.2 0 -3.5" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
 
-       
-
-       <!-- <a-entity gltf-model="url(assets/mesa-sombrilla.glb)" scale="0.2 0.2 0.2"></a-entity> -->
-
-      
       
         <a-link href="tesoro/" 
         scale="2 2 2" 
@@ -330,30 +325,10 @@
         ></a-link>
       
 
-      
-      
-
-
-      
-
-    
-    
-      <!-- Pelota playa -->
-      <!-- <a-sphere dynamic-body material="src: #pelota-playa" position="10 10 0" radius="0.40" >
-        <a-animation begin="click" attribute="rotation" to="0 360 0"
-        easing="linear" dur="2000" fill="backwards"></a-animation>
-      </a-sphere>  -->
-      <!-- Cubo con animacion ejemplo -->
 
       <a-entity position="10 1 0" dynamic-body>
         <a-entity mixin="pelota pelotas">
           <a-animation begin="click" attribute="position" to="0 3 0"
-                       easing="linear" dur="1000" fill="backwards"></a-animation>
-        </a-entity>
-      </a-entity>
-      <a-entity position="10 1 1" static-body>
-        <a-entity mixin="pelota pelotas">
-          <a-animation begin="click" attribute="rotation" to="0 360 0"
                        easing="linear" dur="1000" fill="backwards"></a-animation>
         </a-entity>
       </a-entity>

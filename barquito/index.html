@@ -51,6 +51,9 @@
       <img id="src-cuadro2" src="assets/cuadro2.jpeg" />
       <img id="src-logo" src="assets/logo.png" />
       <img id="src-pelota" src="assets/pelota.png" />
+      <img id="src-youtube" src="assets/youtube.png" />
+      <img id="src-instagram" src="assets/instagram.png" />
+      <img id="src-tiktok" src="assets/tiktok.png" />
              
       <a-mixin id="col" geometry="primitive: box; width: 0.2; height: 8; depth: 0.2;" static-body ></a-mixin>
       <a-mixin id="barranda" geometry="primitive: box; width: 0.1; height: 2.5; depth: 0.1;" static-body ></a-mixin>
@@ -91,7 +94,6 @@
 
     
       <a-entity camera look-controls universal-controls jump-ability kinematic-body position="-10 2 3" scale="0.5 0.5 0.5">
-      <!-- <a-entity camera look-controls universal-controls jump-ability  position="0 20 0"> -->
         <a-entity position="0 0 -0.5"
                   geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
                   material="color: black; shader: flat"
@@ -270,6 +272,11 @@
       <a-entity mixin="tablas" position="30 0 -13" scale="1 1.2 1"static-body></a-entity>
       <a-entity mixin="tablas" position="30 0 -12" scale="1 1 1"static-body></a-entity>
 
+      <!-- Social Media -->
+      <a-image src="#src-youtube" position="13 2 2" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.youtube.com/channel/UC_hsfJD7V14WPeeFgf3H9xA"></a-image>
+      <a-image src="#src-instagram" position="13 2 4" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.instagram.com/elbarquitodecolon/"></a-image>
+      <a-image src="#src-tiktok" position="13 2 6" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.tiktok.com/@elbarquitodecolon"></a-image>
+
       <!-- Palmeras -->
       <a-entity mixin="palmeras" position="40 0 -15" scale="1 1.5 1"></a-entity>
       <a-entity mixin="palmeras" position="40 0 -9" scale="1 1 1"></a-entity>
@@ -312,8 +319,8 @@
        <a-entity mixin="butacos" static-body position="3.2 0 -2.4" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
        <a-entity mixin="butacos" static-body position="3.2 0 -3.5" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
 
-      
-        <a-link href="tesoro/" 
+      <!-- Portal-->
+      <a-link href="tesoro/" 
         scale="2 2 2" 
         position="10 2.5 -10" 
         image="#thumbTesoro" 
@@ -322,14 +329,11 @@
         title="Busqueda del Tesoro"
         titleColor="black"
         peekMode="true"
-        ></a-link>
+      ></a-link>
       
-
-
+      <!-- Pelota playa -->
       <a-entity position="10 1 0" dynamic-body>
         <a-entity mixin="pelota pelotas">
-          <a-animation begin="click" attribute="position" to="0 3 0"
-                       easing="linear" dur="1000" fill="backwards"></a-animation>
         </a-entity>
       </a-entity>
     

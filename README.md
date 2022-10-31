@@ -1,6 +1,6 @@
 # FoodVerse
 
-
+Deployment in OCI
 ## Connection with ssh in Windows PowerShell to OCI instance 
 
 Open PowerShell with admin privilages
@@ -153,3 +153,6 @@ sudo git clone https://github.com/oracle-devrel/devo-tron-metaverse-room.git .
 ```
 check everthing is coorect connecting to:
 https://<IP_address>/
+
+## Libraries docs
+Aframe: https://aframe.io/docs/0.8.0/introduction/

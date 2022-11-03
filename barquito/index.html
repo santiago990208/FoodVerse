@@ -273,9 +273,9 @@
       <a-entity mixin="tablas" position="30 0 -12" scale="1 1 1"static-body></a-entity>
 
       <!-- Social Media -->
-      <a-image src="#src-youtube" position="13 2 2" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.youtube.com/channel/UC_hsfJD7V14WPeeFgf3H9xA"></a-image>
-      <a-image src="#src-instagram" position="13 2 4" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.instagram.com/elbarquitodecolon/"></a-image>
-      <a-image src="#src-tiktok" position="13 2 6" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.tiktok.com/@elbarquitodecolon"></a-image>
+      <a-image src="#src-youtube" position="13 2 5" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.youtube.com/channel/UC_hsfJD7V14WPeeFgf3H9xA"></a-image>
+      <a-image src="#src-instagram" position="13 2 7" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.instagram.com/elbarquitodecolon/"></a-image>
+      <a-image src="#src-tiktok" position="13 2 9" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.tiktok.com/@elbarquitodecolon"></a-image>
 
       <!-- Palmeras -->
       <a-entity mixin="palmeras" position="40 0 -15" scale="1 1.5 1"></a-entity>
@@ -332,7 +332,12 @@
       ></a-link>
       
       <!-- Pelota playa -->
-      <a-entity position="10 1 0" dynamic-body>
+      <a-entity position="10 5 0" dynamic-body>
+        <a-entity mixin="pelota pelotas">
+        </a-entity>
+      </a-entity>
+      <!-- Pelota playa -->
+      <a-entity position="-10 5 0" dynamic-body>
         <a-entity mixin="pelota pelotas">
         </a-entity>
       </a-entity>

@@ -156,3 +156,6 @@ https://<IP_address>/
 
 ## Libraries docs
 Aframe: https://aframe.io/docs/0.8.0/introduction/
+
+##Claves de acceso
+APEX: Usuario:admin y clave: Lucia040917!

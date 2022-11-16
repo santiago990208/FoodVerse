@@ -1,0 +1,704 @@
+<html>
+
+<head>
+  <script>
+    // WebXR requires https: to work so ensure redirected if needed.
+    if (location.hostname !== 'localhost' && window.location.protocol === 'http:') window.location.protocol = 'https:';
+  </script>
+
+  <!-- the AFrame library and 3rd party components -->
+  <!-- libreria de enviorments y aframe -->
+	<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe/dist/aframe-master.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
+  <!-- librerias para phisycs y que todo funcione -->
+   <script>window.module = {exports:{}}</script> <!--Dirty hack to get the sphere collider loading :-( -->
+	<script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-extras/src/misc/sphere-collider.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/Hypnos-phi/aframe-extras/dist/aframe-extras.controls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/diarmidmackenzie/christmas-scene/lib/physx.release.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/diarmidmackenzie/christmas-scene/lib/physics.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handy-work/build/handy-controls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handy-work/build/magnet-helpers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-htmlmesh/build/aframe-html.min.js"></script>
+  <script src="simple-navmesh-constraint.js"></script>
+  <!-- maybe puede quitarse -->
+  <script src="model-utils.js"></script>
+  
+  <!-- Our custom behaviour -->
+	<script src="main.js"></script>
+
+  <!-- clicks -->
+  <script>
+    AFRAME.registerComponent("link-click", {
+      init: function() {
+        this.el.addEventListener("click", (e) => {
+          window.location = this.data.href;
+        })
+      }
+    })
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.10.0/dist/networked-aframe.min.js"></script>
+    <script>
+      THREE.Math = THREE.MathUtils;
+    </script>
+    <script>
+        AFRAME.registerComponent('spawn-in-circle', {
+          schema: {
+            radius: {type: 'number', default: 1}
+          },
+        
+          init: function() {
+            var el = this.el;
+            var center = el.getAttribute('position');
+        
+            var angleRad = this.getRandomAngleInRadians();
+            var circlePoint = this.randomPointOnCircle(this.data.radius, angleRad);
+            var worldPoint = {x: circlePoint.x + center.x, y: center.y, z: circlePoint.y + center.z};
+            el.setAttribute('position', worldPoint);
+        
+            var angleDeg = angleRad * 180 / Math.PI;
+            var angleToCenter = -1 * angleDeg + 90;
+            var rotationStr = '0 ' + angleToCenter + ' 0';
+            el.setAttribute('rotation', rotationStr);
+          },
+        
+          getRandomAngleInRadians: function() {
+            return Math.random()*Math.PI*2;
+          },
+        
+          randomPointOnCircle: function (radius, angleRad) {
+            x = Math.cos(angleRad)*radius;
+            y = Math.sin(angleRad)*radius;
+            return {x: x, y: y};
+          }
+        });
+    </script>
+    <script>
+      // Temporary workaround for template declaration; see issue 167
+      NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
+      NAF.schemas.getComponents = (template) => {
+        if (!NAF.schemas.hasTemplate('#head-template')) {
+          NAF.schemas.add({
+            template: '#head-template',
+            components: [
+              'position',
+              'rotation',
+
+              // In this example, we don't sync the material.color itself, like the basic example;
+              // we instead sync player-info, which includes color setting + updating.
+              // (you can see an example of the other pattern in the basic.html demo)
+              'player-info'
+            ]
+          });
+        }
+
+        const components = NAF.schemas.getComponentsOriginal(template);
+        return components;
+      };
+    </script>
+    <script>
+      window.ntExample = {
+        randomColor: () => {
+          return '#' + new THREE.Color(Math.random(), Math.random(), Math.random()).getHexString();
+        }
+      };
+
+      AFRAME.registerComponent('player-info', {
+        // notice that color and name are both listed in the schema; NAF will only keep
+        // properties declared in the schema in sync.
+        schema: {
+          name: { type: 'string', default: 'user-' + Math.round(Math.random() * 10000) },
+          color: {
+            type: 'color', // btw: color is just a string under the hood in A-Frame
+            default: window.ntExample.randomColor()
+          }
+        },
+
+        init: function () {
+          this.head = this.el.querySelector('.head');
+          this.nametag = this.el.querySelector('.nametag');
+
+          this.ownedByLocalUser = this.el.id === 'player';
+          if (this.ownedByLocalUser) {
+            // populate the html overlay with the correct name on init
+            this.nametagInput = document.getElementById('username-overlay');
+            this.nametagInput.value = this.data.name;
+
+            // add the initial color to the html overlay color picker button
+            document.querySelector('button').style.backgroundColor = this.data.color;
+            document.querySelector('button').style.color = this.data.color;
+          }
+        },
+
+        // here as an example, not used in current demo. Could build a user list, expanding on this.
+        listUsers: function () {
+          console.log(
+            'userlist',
+            [...document.querySelectorAll('[player-info]')].map((el) => el.components['player-info'].data.name)
+          );
+        },
+
+        newRandomColor: function () {
+          this.el.setAttribute('player-info', 'color', window.ntExample.randomColor());
+        },
+
+        update: function () {
+          if (this.head) this.head.setAttribute('material', 'color', this.data.color);
+          if (this.nametag) this.nametag.setAttribute('value', this.data.name);
+        }
+      });
+    </script>
+  
+  <title>Metaverso en OCI</title>
+  <meta property="og:title" content="Metaverso en OCI free" />
+  <!-- cambiarlo por OCI -->
+  <meta property="og:url" content="https://aframe-xr-starterkit.glitch.me/" />
+  <meta name="description" content="A sample scene for working with WebXR Hand Tracking" />
+  <meta property="og:description" content="A sample scene for working with WebXR Hand Tracking" />
+  <meta property="og:image" content="https://cdn.glitch.global/d29f98b4-ddd1-4589-8b66-e2446690e697/snapshot.png?v=1645201177438" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <button
+      id="color-changer"
+      style="z-index: 100; bottom: 24px; left: 24px; position: fixed"
+      onclick="let newColor = window.ntExample.randomColor();
+             document.getElementById('player').setAttribute('player-info', 'color', newColor); 
+             document.querySelector('button').style.backgroundColor = newColor;
+             document.querySelector('button').style.color = newColor;
+    "
+    >
+      ■
+    </button>
+    <input
+      id="username-overlay"
+      style="z-index: 100; bottom: 24px; left: 48px; position: fixed"
+      oninput="document.getElementById('player').setAttribute('player-info', 'name', this.value)"
+    />
+	<a-scene
+    networked-scene="
+    app: myApp;
+    room: room1;
+    debug: true;
+    adapter: wseasyrtc;"
+    physx="autoLoad: true; delay: 300; wasmUrl: https://stemkoski.github.io/A-Frame-Examples/js/physx.release.wasm; useDefaultScene: false;"
+		webxr="overlayElement:#dom-overlay;"
+		background="color:skyblue;"
+		reflection="directionalLight:#dirlight;"
+    renderer="alpha:true;physicallyCorrectLights:true;colorManagement:true;exposure:2;toneMapping:ACESFilmic;"
+		gltf-model="dracoDecoderPath: https://cdn.jsdelivr.net/npm/three@0.129.0/examples/js/libs/draco/gltf/;"
+	>
+    <a-assets>
+      <template id="rig-template">
+        <a-entity></a-entity>
+      </template>
+
+      <template id="head-template">
+        <a-entity class="avatar" player-info>
+          <a-sphere class="head" scale="0.2 0.22 0.2"></a-sphere>
+          <a-entity class="face" position="0 0.05 0">
+            <a-sphere class="eye" color="white" position="0.06 0.05 -0.16" scale="0.04 0.04 0.04">
+              <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+            </a-sphere>
+            <a-sphere class="eye" color="white" position="-0.06 0.05 -0.16" scale="0.04 0.04 0.04">
+              <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+            </a-sphere>
+          </a-entity>
+            <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
+            <a-text
+            class="nametag"
+            value="?"
+            rotation="0 180 0"
+            position=".25 -.35 0"
+            side="double"
+            scale=".5 .5 .5"
+            color="#000000"
+          ></a-text>
+
+        </a-entity>
+        </template>
+      <!-- mano derecha eskeleto -->
+      <a-asset-item id="right-gltf" src="https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/skeleton-right-hand-webxr/model.gltf"></a-asset-item>
+      <!-- mano izquierda -->
+      <a-asset-item id="left-gltf" src="https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/skeleton-left-hand-webxr/model.gltf"></a-asset-item>
+      <!-- reloj exit -->
+      <a-asset-item id="watch-gltf" src="https://cdn.glitch.global/d29f98b4-ddd1-4589-8b66-e2446690e697/watch.glb?v=1645016979219"></a-asset-item>
+     <!-- reloj -->
+      <a-asset-item id="clock-gltf" src="https://cdn.glitch.global/d29f98b4-ddd1-4589-8b66-e2446690e697/vintage_grandfather_clock_01_1k-v2.glb?v=1647265174189"></a-asset-item>
+      
+      <a-mixin id="animations" animation__click="property: components.material.material.color; type: color; to: blue; startEvents: click; dur: 500;"></a-mixin>
+      <a-mixin id="blink" blink-controls="rotateOnTeleport:false;cameraRig: #cameraRig; teleportOrigin: #head; collisionEntities:.navmesh;"></a-mixin>
+      <a-mixin id="handle-visual" geometry="width:0.05;height:0.05;depth:0.2"></a-mixin>
+
+      <!-- barquito -->
+      <!-- imagenes -->
+      <img id="src-camino" src="assets/piso.png" />
+      <img id="arena" src="assets/arena.jpeg" />
+      <img id="cielo" src="assets/cielo.jpeg" />
+      <img id="pared-este" src="assets/pared-este.jpeg" />
+      <img id="pared-oeste" src="assets/pared-oeste.jpeg" />
+      <img id="pared-sur" src="assets/pared-sur.jpeg" />
+      <img id="pared-norte" src="assets/pared-norte.jpeg" />
+      <img id="src-techo" src="assets/Techo.jpg" />
+      <img id="src-barra" src="assets/Barra.jpg" />
+      <img id="src-pared" src="assets/Paredes y columnas.jpg" />
+      <img id="src-menu" src="assets/PORTADA _MENU.png" />
+      <img id="src-cuadro1" src="assets/cuadro1.jpeg" />
+      <img id="src-cuadro2" src="assets/cuadro2.jpeg" />
+      <img id="src-logo" src="assets/logo.png" />
+      <img id="src-pelota" src="assets/pelota.png" />
+      <img id="src-youtube" src="assets/youtube.png" />
+      <img id="src-instagram" src="assets/instagram.png" />
+      <img id="src-tiktok" src="assets/tiktok.png" />
+      <img id="thumbTesoro"  src="assets/tesoro-portal.png">
+
+      <!-- mixins glft -->
+      <a-gltf-model id="mesa-interna" shadow="receive:true;cast:true;" src="assets/mesa-madera.glb"></a-gltf-model>
+      <a-mixin id="mesa-madera" gltf-model="#mesa-interna"></a-mixin>
+
+      <a-gltf-model id="mesa-afuera" shadow="receive:true;cast:true;" src="assets/mesa-sombrilla.glb"></a-gltf-model>
+      <a-mixin id="mesas-sombrilla" gltf-model="#mesa-afuera"></a-mixin>
+
+      <a-gltf-model id="butaco-interno" shadow="receive:true;cast:true;" src="assets/butaco.glb"></a-gltf-model>
+      <a-mixin id="butacos" gltf-model="#butaco-interno"></a-mixin>
+
+      <a-gltf-model id="palmera" shadow="receive:true;cast:true;" src="assets/Palmera.gltf"></a-gltf-model>
+      <a-mixin id="palmeras" gltf-model="#palmera"></a-mixin>
+
+      <a-gltf-model id="tabla" shadow="receive:true;cast:true;" src="assets/Tabla_surf.gltf"></a-gltf-model>
+      <a-mixin id="tablas" gltf-model="#tabla"></a-mixin>
+
+      <!-- mixins building -->
+      <img id="src-techo" src="assets/Techo.jpg" />
+      <a-mixin id="techo" geometry="primitive: box; width: 7; height: 0.01; depth: 13;" ></a-mixin>
+      <a-mixin id="techos" material="src: #src-techo"></a-mixin>
+
+      <a-mixin id="barra" geometry="primitive: box; width: 3.4; height: 1.7; depth: 0.5;"  ></a-mixin>
+      <a-mixin id="barra-mesa" geometry="primitive: box; width: 3.4; height: 0.01; depth: 0.8;"  ></a-mixin>
+      <a-mixin id="barras" material="src: #src-barra"></a-mixin>
+      <a-mixin id="barras-mesas" material="color: white"></a-mixin>
+
+      <a-mixin id="pared" geometry="primitive: box; width: 5.2; height: 8; depth: 0.2;" ></a-mixin>
+      <a-mixin id="paredes" material="src: #src-pared"></a-mixin>
+
+      <a-mixin id="borders" material="color: black"></a-mixin>
+
+      <a-mixin id="cuadro1" geometry="primitive: box; width: 1.5; height: 2; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-cuadro1" geometry="primitive: box; width: 1.6; height: 2.1; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="cuadro2" geometry="primitive: box; width: 2; height: 1.5; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-cuadro2" geometry="primitive: box; width: 2.1; height: 1.6; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="img-cuadro1" material="src: #src-cuadro1"></a-mixin>
+      <a-mixin id="img-cuadro2" material="src: #src-cuadro2"></a-mixin>
+
+      <a-mixin id="menu" geometry="primitive: box; width: 3; height: 2; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-menu" geometry="primitive: box; width: 3.1; height: 2.1; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="menus" material="src: #src-menu"></a-mixin>
+     
+      <a-mixin id="col" geometry="primitive: box; width: 0.2; height: 8; depth: 0.2;"  ></a-mixin>
+      <a-mixin id="barranda" geometry="primitive: box; width: 0.1; height: 2.5; depth: 0.1;" ></a-mixin>
+
+      <a-mixin id="pelota" geometry="primitive: sphere; radius: 0.4"></a-mixin>
+      <a-mixin id="pelotas" material="src: #src-pelota"></a-mixin>
+
+    </a-assets>
+
+    <!-- Luz-->
+		<a-light id="dirlight" intensity="2" light="castShadow:false;type:hemisphere" position="0 -6 0"></a-light>
+		<!-- <a-light id="dirlight" intensity="2" light="type: hemisphere; color: #33C; groundColor: #3C3; intensity: 2" position="0 -6 0"></a-light> -->
+    <!-- enviorment -->
+    <!-- <a-entity position="0 -0.2 0" environment="lighting:none;shadow:true;"></a-entity> -->
+    <!-- piso -->
+    <a-entity id="enviroment">
+      <a-plane id="arena"
+      class="navmesh"
+      rotation="-90 0 0"
+      position="0 0 0"
+      width="39.7"
+      height="39.7"
+      src="#arena"
+      ></a-plane>
+       <!-- Cielo -->
+       <a-plane id="cielo"
+       
+       rotation="90 0 0"
+       position="0 20 0"
+       width="40"
+       height="40"
+       src="#cielo"
+       ></a-plane>
+       <!-- Norte -->
+       <a-plane id="norte"
+       
+       rotation="-180 180 180"
+       position="0 0 -20"
+       width="40"
+       height="40"
+       src="#pared-norte"
+       ></a-plane>
+       <!-- Sur -->
+       <a-plane id="norte"
+       
+       rotation="0 180 0"
+       position="0 0 20"
+       width="40"
+       height="40"
+       src="#pared-sur"
+       ></a-plane>
+       <!-- Este -->
+       <a-plane id="este"
+       
+       rotation="-180 90 180"
+       position="20 0 0"
+       width="40"
+       height="40"
+       src="#pared-este"
+       ></a-plane>
+       <!-- Este -->
+       <a-plane id="oeste"
+       
+       rotation="0 90 0"
+       position="-20 0 0"
+       width="40"
+       height="40"
+       src="#pared-oeste"
+       ></a-plane>
+       <!-- Piso restaurante -->
+        <a-plane id="piso-restaurante"
+        rotation="-90 0 0"
+        position="2.7 0.1 2"
+        width="32"
+        height="16"
+        src="#src-camino"
+        ></a-plane>
+    </a-entity>
+
+    <a-entity id="extras">
+      <!-- Tablas surf -->
+      <a-entity mixin="tablas" position="30 0 -14" scale="1 1.4 1"></a-entity>
+      <a-entity mixin="tablas" position="30 0 -13" scale="1 1.2 1"></a-entity>
+      <a-entity mixin="tablas" position="30 0 -12" scale="1 1 1"></a-entity>
+
+      <!-- Social Media -->
+      <a-image src="#src-youtube" position="13 2 5" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.youtube.com/channel/UC_hsfJD7V14WPeeFgf3H9xA"></a-image>
+      <a-image src="#src-instagram" position="13 2 7" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.instagram.com/elbarquitodecolon/"></a-image>
+      <a-image src="#src-tiktok" position="13 2 9" scale="1.2 1 1" rotation="0 -90 0" link-click="href: https://www.tiktok.com/@elbarquitodecolon"></a-image>
+
+      <!-- Palmeras -->
+      <a-entity mixin="palmeras" position="40 0 -15" scale="1 1.5 1"></a-entity>
+      <a-entity mixin="palmeras" position="40 0 -9" scale="1 1 1"></a-entity>
+      <a-entity mixin="palmeras" position="40 0 -3" scale="1 1.5 1"></a-entity>
+      <a-entity mixin="palmeras" position="40 0 3" scale="1 1 1"></a-entity>
+      <a-entity mixin="palmeras" position="40 0 9" scale="1 1.5 1"></a-entity>
+
+      <a-entity mixin="palmeras" position="5 0 -15" scale="1 1.5 1"></a-entity>
+      <a-entity mixin="palmeras" position="5 0 -9" scale="1 1 1"></a-entity>
+      <a-entity mixin="palmeras" position="5 0 -3" scale="1 1.5 1"></a-entity>
+      <a-entity mixin="palmeras" position="5 0 3" scale="1 1 1"></a-entity>
+      <a-entity mixin="palmeras" position="5 0 9" scale="1 1.5 1"></a-entity>
+
+      <a-entity mixin="palmeras" position="35 0 12" scale="1 1.5 1"></a-entity>
+      <a-entity mixin="palmeras" position="25 0 12" scale="1 1 1"></a-entity>
+      <a-entity mixin="palmeras" position="17 0 12" scale="1 1.5 1"></a-entity>
+      <a-entity mixin="palmeras" position="10 0 12" scale="1 1 1"></a-entity>
+
+      <!-- Portal-->
+      
+      <a-link href="tesoro/" 
+        scale="2 2 2" 
+        position="10 2.5 -10"   
+        image="#thumbTesoro" 
+        color="blue"
+        title="Busqueda del Tesoro"
+        titleColor="#000"
+        peekMode="false"
+      ></a-link>
+
+      <!-- <a-gltf-model id="clock" shadow="receive:true;" src="#clock-gltf" position="0 0 0" rotation="0 51 0" physx-body-from-model="type:dynamic;mass:15;"></a-gltf-model> -->
+      
+      <!-- Pelota playa -->
+      
+        <!-- <a-entity mixin="pelota pelotas" shadow="receive:true;" position="0 2 0" rotation="0 51 0" physx-body-from-model="type:dynamic;mass:15;"></a-entity> -->
+
+      <!-- Pelota playa -->
+      <!-- <a-entity position="-10 5 0" physx-body-from-model="type:dynamic;mass:15;">
+        <a-entity mixin="pelota pelotas" physx-body-from-model="type:dynamic;mass:15;">
+        </a-entity>
+      </a-entity>
+    </a-entity>   -->
+
+    <!-- camera -->
+    <a-entity id="cameraRig"
+      simple-navmesh-constraint="navmesh:.navmesh;fall:0.5;height:0;exclude:.navmesh-hole;"
+      movement-controls="speed:0.5;camera:#head;"
+      position="-10 0 3" rotation="0 -45 0" >
+      <a-entity id="head"
+        camera="near:0.01;"
+        look-controls="pointerLockEnabled: false"
+        position="0 1.65 0",
+        networked="template:#head-template;">
+        <a-cursor position="0 0 -0.5"
+          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+          material="color: black; shader: flat"
+          cursor="rayOrigin: mouse">
+        </a-cursor>
+      </a-entity>
+    </a-entity>
+      
+      <!-- Hand tracking -->
+      <a-entity handy-controls="right:#right-gltf;materialOverride:right;" material="color:gold;metalness:1;roughness:0;">
+        
+        <!-- Boton oara salir de VR -->
+        <a-gltf-model src="#watch-gltf" data-left="wrist" position="-1000 0 0">
+          <a-sphere radius="0.02" position="0 0.02 0" sphere-collider="radius:0.02;objects:[data-right$=-tip];" exit-on="hitend" visible="false"></a-sphere>
+        </a-gltf-model>
+        
+        <!-- Add a golden ring on the finger -->
+        <a-entity data-left="ring-finger-phalanx-proximal">
+          <a-torus position="0 0 -0.03" radius="0.008" radius-tubular="0.001" scale="1 1 1.5" material="color:gold;metalness:1;roughness:0;"></a-torus>
+        </a-entity>
+        
+        <!-- Usar los dedos para teleportacion -->
+        <a-entity data-right="index-finger-tip" mixin="blink" blink-controls="snapTurn:false;startEvents:pose_point_fuseShort;endEvents:pose_point_fuseLong;cancelEvents:pose_cancel_point;"></a-entity>
+        <a-entity data-left="index-finger-tip"  mixin="blink" blink-controls="snapTurn:false;startEvents:pose_point_fuseShort;endEvents:pose_point_fuseLong;cancelEvents:pose_cancel_point;"></a-entity>
+
+        <!-- The direction hands are facing, we will also attach labels to show the currently detected pose or controller button -->
+        <!-- These also do teleportaion for Blink controls in VR -->
+        <a-entity data-right="ray" mixin="blink" html-pointer="" raycaster="objects:[html];far:0.3;showLine:false;lineColor:black;">
+          <a-entity position="0 0 -0.22" visible="false" class="pose-label" text="value: Hello World; align: center;"></a-entity>
+        </a-entity>
+        <a-entity data-left="ray" mixin="blink" html-pointer="" raycaster="objects:[html];far:0.3;showLine:false;lineColor:black;">
+          <a-entity position="0 0 -0.22" visible="false" class="pose-label" text="value: Hello World; align: center;"></a-entity>
+        </a-entity>
+        
+        <!-- These get drawn towards grabable objects, moving the whole hand and the attached elements-->
+        <a-entity id="left-magnet" data-left="grip"  data-magnet="magnet-left"  grab-magnet-target="startEvents:squeezestart,pose_fist;stopEvents:pose_flat_fuseShort,squeezeend;noMagnetEl:#left-no-magnet;"></a-entity>
+        <a-entity id="right-magnet" data-right="grip" data-magnet="magnet-right" grab-magnet-target="startEvents:squeezestart,pose_fist;stopEvents:pose_flat_fuseShort,squeezeend;noMagnetEl:#right-no-magnet;"></a-entity>
+    
+        <!-- markers to let us know the real location of the hands, you probably want to make them visible="false" or just make them empty <a-entities> -->
+        <a-entity id="left-no-magnet" data-left="grip" data-no-magnet>
+          <a-entity html="#my-interface" position="-0.142 -0.0166 -0.02928" rotation="-80 90 0" scale="0.7 0.7 0.7"></a-entity>
+        </a-entity>
+        <a-entity id="right-no-magnet" data-right="grip" data-no-magnet></a-entity>
+        
+        <!-- Invisible objects at the tips of each finger for physics or intersections -->
+        <a-sphere data-right="index-finger-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-right="middle-finger-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-right="ring-finger-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-right="pinky-finger-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-right="thumb-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-left="index-finger-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-left="middle-finger-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-left="ring-finger-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-left="pinky-finger-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+        <a-sphere data-left="thumb-tip" radius="0.004" visible="false" physx-body="type: kinematic;"></a-sphere>
+      </a-entity>
+    </a-entity>
+        
+    <!-- mesas afuera -->
+    <a-entity mixin="mesas-sombrilla" position="8.8 1 -4" scale="0.7 0.7 0.7" >
+      <a-plane rotation="-90 0 0" width="5" height="5" position="0 -1 0" class="navmesh-hole" visible="false"></a-plane>
+    </a-entity>
+    <a-entity mixin="mesas-sombrilla" position="8.8 1 4" scale="0.7 0.7 0.7" >
+      <a-plane rotation="-90 0 0" width="5" height="5" position="0 -1 0" class="navmesh-hole" visible="false"></a-plane>
+    </a-entity>
+    <a-entity mixin="mesas-sombrilla" position="-6.5 1 -3" scale="0.7 0.7 0.7" >
+      <a-plane rotation="-90 0 0" width="5" height="5" position="0 -1 0" class="navmesh-hole" visible="false"></a-plane>
+    </a-entity>
+    <a-entity mixin="mesas-sombrilla" position="-6.2 1 6" scale="0.7 0.7 0.7" >
+      <a-plane rotation="-90 0 0" width="5" height="5" position="0 -1 0" class="navmesh-hole" visible="false"></a-plane>
+    </a-entity>
+
+    <!-- mesa adentro -->
+    <a-entity mixin="mesa-madera" position="-1.1 .4 3" rotation="0 180 0" scale="0.32 0.32 0.32" >
+      <a-plane rotation="-90 0 0" width="5" height="5" class="navmesh-hole" visible="false"></a-plane>
+    </a-entity>
+    <a-entity mixin="mesa-madera" position="1.6 .4 3" rotation="0 180 0" scale="0.32 0.32 0.32" >
+      <a-plane rotation="-90 0 0" width="5" height="5" class="navmesh-hole" visible="false"></a-plane>
+    </a-entity>
+    <a-entity mixin="mesa-madera" position="4.2 .4 3" rotation="0 180 0" scale="0.32 0.32 0.32" >
+      <a-plane rotation="-90 0 0" width="5" height="5" class="navmesh-hole" visible="false"></a-plane>
+    </a-entity>
+
+    <!-- butaco -->
+    
+    <a-entity mixin="butacos"  position="-0.5 0 -0.6" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+    <a-entity mixin="butacos"  position="1 0 -0.6" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+    <a-entity mixin="butacos"  position="2.5 0 -0.6" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+
+    <a-entity mixin="butacos"  position="-1.2 0 -1.3" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+    <a-entity mixin="butacos"  position="-1.2 0 -2.4" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+    <a-entity mixin="butacos"  position="-1.2 0 -3.5" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+    
+    <a-entity mixin="butacos"  position="3.2 0 -1.3" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+    <a-entity mixin="butacos"  position="3.2 0 -2.4" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+    <a-entity mixin="butacos"  position="3.2 0 -3.5" rotation="0 0 0" scale="0.015 0.015 0.015" ></a-entity>
+
+    <a-entity id="building">
+      <!-- Techo -->
+      <a-entity mixin="techo techos"  position="1.7 5 -3"  rotation="0 90 -30"></a-entity>
+      <a-entity mixin="techo techos"  position="1.7 5 3"  rotation="0 90 30"></a-entity>
+      <!-- Columnas Techo-->
+      <a-box mixin="paredes" width="8.7" height="0.2" depth="0.2" position="1.55 4.1 4.2" ></a-box>
+      <a-box mixin="paredes"width="8.7" height="0.2" depth="0.2" position="1.55 4.1 -4.2" ></a-box>
+      <a-box mixin="paredes"width="0.2" height="0.2" depth="8.6" position="-2.7 4.1 0" ></a-box>
+      <a-box mixin="paredes"width="0.2" height="0.2" depth="8.6" position="5.8 4.1 0" ></a-box>
+
+
+      <!-- Barra -->
+      <a-entity mixin="barra barras"  position="1 0.3 -1.3">
+        <a-plane rotation="-90 0 0" width="3.4" height="0.8" class="navmesh-hole" visible="false"></a-plane>
+      </a-entity>
+      <a-entity mixin="barra barras" position="2.5 0.3 -2.8" rotation="0 90 0">
+        <a-plane rotation="-90 0 0"  width="3.4" height="0.8" class="navmesh-hole" visible="false"></a-plane>
+      </a-entity>
+      <a-entity mixin="barra barras"  position="-0.5 0.3 -2.8" rotation="0 90 0">
+        <a-plane rotation="-90 0 0"  width="3.4" height="0.8" class="navmesh-hole" visible="false"></a-plane>
+      </a-entity>
+
+      <a-entity mixin="barra-mesa barras-mesas"  position="1 1.2 -1.295"></a-entity>
+      <a-entity mixin="barra-mesa barras-mesas" position="2.5 1.2 -2.6" rotation="0 90 0"></a-entity>
+      <a-entity mixin="barra-mesa barras-mesas"  position="-0.5 1.2 -2.6" rotation="0 90 0"></a-entity>
+
+      <!-- Paredes -->
+      
+      <a-entity id="pared-cuadro" mixin="pared paredes"  position="3.1 0 4.2"></a-entity>
+        <!-- cuadros -->
+        <a-entity mixin="cuadro1 img-cuadro1"  position="4.6 2.5 4"></a-entity>
+        <a-entity mixin="border-cuadro1 borders"  position="4.6 2.5 4.1"></a-entity>
+        <a-entity mixin="cuadro2 img-cuadro2"  position="2 1.5 4"></a-entity>
+        <a-entity mixin="border-cuadro2 borders"  position="2 1.5 4.1"></a-entity>
+
+      <a-entity id="pared-menu" mixin="pared paredes" scale=" 1 1 2.1" position="-0 0 -4.31"></a-entity>
+        <!-- Menu -->
+        <a-entity mixin="menu menus"  position="1 2.5 -4" link-click="href: menu/"></a-entity>
+        <a-entity mixin="border-menu borders"  position="1 2.5 -4.1"></a-entity>
+
+        <!-- Logos -->
+        <a-image src="#src-logo" scale="3 3 3" rotation="0 180 0" position="-0.4 2 -4.6"></a-image>
+      
+      <!-- Columnas -->
+        <!-- Norte  -->
+        <a-entity mixin="col paredes"  position="-2.7 0 -4.2"></a-entity>
+        <a-entity mixin="col paredes" position="2.7 0 -4.2"></a-entity>
+        <a-entity mixin="col paredes" position="5.8 0 -4.2"></a-entity>
+        <a-entity id="barrandas-norte" position="5.5 0 -8.4">
+          <a-box mixin="barras" width="2.9" height="0.1" depth="0.1" position="-1.2 1.2 4.2" ></a-box>
+          <a-entity mixin="barranda barras"  position="0 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-.4 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-0.8 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-1.2 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-1.6 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-2 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-2.4 0 4.2"></a-entity>
+        </a-entity>
+        <!-- Sur  -->
+        <a-entity mixin="col paredes"  position="0.4 0 4.2"></a-entity>
+        <a-entity mixin="col paredes"  position="-2.7 0 4.2"></a-entity>
+        <a-entity mixin="col paredes"  position="5.8 0 4.2"></a-entity>
+        <a-entity id="barrandas-sur" position="0 0 0">
+          <a-box mixin="barras" width="2.9" height="0.1" depth="0.1" position="-1.2 1.2 4.2" ></a-box>
+          <a-entity mixin="barranda barras"  position="0 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-.4 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-0.8 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-1.2 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-1.6 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-2 0 4.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="-2.4 0 4.2"></a-entity>
+        </a-entity>
+        
+        <!-- lateral  -->
+        <!-- lateral oeste -->
+        <a-entity mixin="col paredes"  position="-2.7 0 2.3"></a-entity>
+        <a-entity id="barrandas-oeste-norte" position="-8.5 0 0">
+          <a-box mixin="barras" width="0.1" height="0.1" depth="1.9" position="5.8 1.2 3.2" ></a-box>
+          <a-entity mixin="barranda barras"  position="5.8 0 2.8"></a-entity>
+          <a-entity mixin="barranda barras"  position="5.8 0 3.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="5.8 0 3.6"></a-entity>
+        </a-entity>
+        <a-entity mixin="col paredes"  position="-2.7 0 -2.3"></a-entity>
+        <a-entity id="barrandas-este-sur" position="-8.5 0 -6.5">
+
+          <a-box mixin="barras" width="0.1" height="0.1" depth="1.9" position="5.8 1.2 3.2" ></a-box>
+          <a-entity mixin="barranda barras"  position="5.8 0 2.8"></a-entity>
+          <a-entity mixin="barranda barras"  position="5.8 0 3.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="5.8 0 3.6"></a-entity>
+        </a-entity>
+        <!-- lateral este -->
+        <a-entity mixin="col paredes"  position="5.8 0 2.3"></a-entity>
+        <a-entity id="barrandas-este norte" position="0 0 0">
+          <a-box mixin="barras" width="0.1" height="0.1" depth="1.9" position="5.8 1.2 3.2" ></a-box>
+          <a-entity mixin="barranda barras"  position="5.8 0 2.8"></a-entity>
+          <a-entity mixin="barranda barras"  position="5.8 0 3.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="5.8 0 3.6"></a-entity>
+        </a-entity>
+        <a-entity mixin="col paredes"  position="5.8 0 -2.3"></a-entity>
+        <a-entity id="barrandas-este-sur" position="0 0 -6.5">
+          <a-box mixin="barras" width="0.1" height="0.1" depth="1.9" position="5.8 1.2 3.2" ></a-box>
+          <a-entity mixin="barranda barras"  position="5.8 0 2.8"></a-entity>
+          <a-entity mixin="barranda barras"  position="5.8 0 3.2"></a-entity>
+          <a-entity mixin="barranda barras"  position="5.8 0 3.6"></a-entity>
+        </a-entity>
+
+      <!-- perimetro navmesh -->
+      <a-plane rotation="-90 0 0" position="1.55 0.2 4.2"  width="9" height="1" color="blue" class="navmesh-hole" visible="false"></a-plane>
+      <a-plane rotation="-90 0 0" position="1.55 0.2 -4.2"  width="9" height="1" color="blue" class="navmesh-hole" visible="false"></a-plane>
+      <a-plane rotation="-90 90 0" position="-2.7 0.2 3"  width="2" height="1" color="blue" class="navmesh-hole" visible="false"></a-plane>
+      <a-plane rotation="-90 90 0" position="-2.7 0.2 -3"  width="2" height="1" color="blue" class="navmesh-hole" visible="false"></a-plane>
+      <a-plane rotation="-90 90 0" position="5.8 0.2 3"  width="2" height="1" color="blue" class="navmesh-hole" visible="false"></a-plane>
+      <a-plane rotation="-90 90 0" position="5.8 0.2 -3"  width="2" height="1" color="blue" class="navmesh-hole" visible="false"></a-plane>
+
+    </a-entity>
+    
+	</a-scene>
+
+	<div id="dom-overlay">
+		<div class="overlay-footer">
+      <section style="display: inline-block; background: rgba(105, 255, 230, 0.716); color: #333333; border-radius: 1em; padding: 1em; margin:0; accent-color: rgb(233, 105, 255);" id="my-interface">
+        <h2>Configuraciones</h2>
+        <fieldset style="border:none;">
+          <legend>Como desea moverse</legend>
+          <input onclick="toggleThumbstick(this)" type="radio" id="thumbstick-teleport" name="thumbstick" value="teleport" checked><label for="thumbstick-teleport"> Teleportarse</label>
+          <input onclick="toggleThumbstick(this)" type="radio" id="thumbstick-move" name="thumbstick" value="move"><label for="thumbstick-move"> Moverse</label>
+        </fieldset>
+        <button onclick="AFRAME.scenes[0].exitVR()" style="display: block;">Salir</button>
+      </section>
+      
+      <!-- HTML form logic -->
+      <script>
+        let movementType = 'teleport';
+        function toggleThumbstick(detail) {
+          const rayPointers = ['[data-right="ray"]', '[data-left="ray"]'].map(s => document.querySelector(s));
+          const type = detail.value;
+          movementType = type;
+          if (type === 'move') {
+
+            // Hack fix for when the camera rig is rotated.
+            cameraRig.object3D.rotation.y = 0;
+            cameraRig.setAttribute('movement-controls', 'enabled', true);
+            for (const p of rayPointers) p.removeAttribute('mixin');
+          }
+          if (type === 'teleport') {
+            cameraRig.setAttribute('movement-controls', 'enabled', false);
+            for (const p of rayPointers) p.setAttribute('mixin', 'blink');
+          }
+        }
+        // If the user is teleporting disable movement-controls in XR
+        const sceneEl = document.querySelector("a-scene");
+        sceneEl.addEventListener("enter-vr", function() {
+          if (movementType === 'teleport') {
+            cameraRig.setAttribute('movement-controls', 'enabled', false);
+          }
+        });
+        sceneEl.addEventListener("exit-vr", function() {
+          cameraRig.setAttribute('movement-controls', 'enabled', true);
+        });
+      </script>
+    </div>
+	</div>
+</body>
+
+</html>

@@ -202,10 +202,10 @@ window.addEventListener("DOMContentLoaded", function() {
   const message = document.getElementById("dom-overlay-message");
   const arContainerEl = document.getElementById("my-ar-objects");
   const cameraRig = document.getElementById("cameraRig");
-  const building = document.getElementById("building");
+  const enviroment = document.getElementById("enviroment");
 
-  // Once the building has loaded update the relfections
-  building.addEventListener('object3dset', function () {
+  // Once the enviroment has loaded update the relfections
+  enviroment.addEventListener('object3dset', function () {
     if (this.components && this.components.reflection) this.components.reflection.needsVREnvironmentUpdate = true;
   }, {once: true});
   
@@ -219,36 +219,6 @@ window.addEventListener("DOMContentLoaded", function() {
     });
   }
   
-  watergun: {
-    const watergun = document.getElementById("watergun");
-    const watergunSlider = watergun.firstElementChild;
-    watergun.addEventListener('grabbed', function (e) {
-      const by = e.detail.by;
-      if (e.target === watergun) {
-        watergun.className = '';
-        if (by.dataset.right) watergunSlider.className = 'magnet-left';
-        if (by.dataset.left) watergunSlider.className = 'magnet-right';
-      }
-      if (e.target === watergunSlider) {
-        watergun.setAttribute('linear-constraint', 'target', '#' + e.detail.byNoMagnet.id);
-      }
-    });
-    watergun.addEventListener('released', function (e) {
-      const by = e.detail.by;
-      watergun.setAttribute('linear-constraint', 'target', '');
-      if (e.target === watergun) {
-        watergun.className = 'magnet-right magnet-left';
-        watergunSlider.className = '';
-      }
-    });
-  }
-
-  // If the user taps on any buttons or interactive elements we may add then prevent
-  // Any WebXR select events from firing
-  message.addEventListener("beforexrselect", e => {
-    e.preventDefault();
-  });
-
   sceneEl.addEventListener("enter-vr", function() {
     if (this.is("ar-mode")) {
       // Entered AR

@@ -11,6 +11,15 @@
     <script src="/easyrtc/easyrtc.js"></script>
     <script src="https://unpkg.com/networked-aframe@^0.10.0/dist/networked-aframe.min.js"></script>
     <script src="js/network-components.js"></script>
+    <script>
+      AFRAME.registerComponent("link-click", {
+        init: function() {
+          this.el.addEventListener("click", (e) => {
+            window.location = this.data.href;
+          })
+        }
+      })
+    </script>
     
   </head>
   <body>
@@ -137,16 +146,22 @@
       <a-mixin id="pelotas" material="src: #src-pelota"></a-mixin>
       </a-assets>
 
-      <a-entity id="rig" movement-controls="fly:true;" spawn-in-circle="radius:3" networked="template:#rig-template;">
+      <a-entity id="rig" movement-controls="fly:true;" spawn-in-circle="radius:3" networked="template:#rig-template;" position="-10 0 3" rotation="0 -45 0" >
         <a-entity
           id="player"
           camera
-          position="0 1.6 0"
+          position="0 1.65 0"
           wasd-controls
           look-controls
           networked="template:#head-template;"
           visible="false"
-      ></a-entity>
+      ><a-cursor position="0 0 -0.5"
+      geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+      material="color: black; shader: flat"
+      cursor="rayOrigin: mouse"
+      >
+    </a-cursor>
+    </a-entity>
       
       <!-- Piso -->
       <a-entity id="enviroment">
@@ -394,15 +409,7 @@
         peekMode="false"
       ></a-link>
 
-      <!-- Pelota playa -->
       
-      <a-entity mixin="pelota pelotas" shadow="receive:true;" position="0 2 0" rotation="0 51 0" physx-body-from-model="type:dynamic;mass:15;"></a-entity>
-
-      <!-- Pelota playa -->
-      <a-entity position="-10 5 0" physx-body-from-model="type:dynamic;mass:15;">
-        <a-entity mixin="pelota pelotas" physx-body-from-model="type:dynamic;mass:15;">
-        </a-entity>
-      </a-entity>
     </a-entity>
     </a-scene>
     <div id="dom-overlay">

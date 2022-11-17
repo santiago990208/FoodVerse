@@ -366,6 +366,25 @@ Clone nuestra habitación del metaverso desde Github
 sudo git clone https://github.com/santiago990208/FoodVerse.git .
 
 ```
+
+## Configurar servidor Multiusuario
+1. Proceder a instalar npm 
+```
+npm install -g npm
+```
+2. Acceder a la carpeta del repositorio
+```
+cd /srv/website/FoodVerse
+```
+3. Correr el siguiente comando para instalar todas las dependencias.
+```
+npm install
+```
+Esto tomara un par de minutos.
+4. Correr el siguiente comando para iniciar el servidor.
+```
+npm install
+```
 ## Probar
 Asegurese que todo funciona correctamente conectándoselo a:
 

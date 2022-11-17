@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="FoodVerse">
+    <meta name="author" content="Santiago Botero">
+    <title>Busqueda del tesoro</title>
+    <meta name="description" content="demo: aframe-maze-component" />
+
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+
+    <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-maze-component/dist/aframe-maze-component.min.js"></script>
+    <script src="../js/info-message.js"></script>
+    <script src="../js/highlight.js"></script>
+    <script src="../js/info-panel.js"></script>
+  </head>
+  <body>
+    <body>
+      <button
+        id="color-changer"
+        style="z-index: 100; bottom: 24px; left: 24px; position: fixed"
+        onclick="let newColor = window.ntExample.randomColor();
+               document.getElementById('player').setAttribute('player-info', 'color', newColor); 
+               document.querySelector('button').style.backgroundColor = newColor;
+               document.querySelector('button').style.color = newColor;
+      "
+      >
+        ■
+      </button>
+      <input
+        id="username-overlay"
+        style="z-index: 100; bottom: 24px; left: 48px; position: fixed"
+        oninput="document.getElementById('player').setAttribute('player-info', 'name', this.value)"
+      />
+    <a-scene
+      camera-position
+      environment="preset: yavapai; ground:flat;  groundTexture: walkernoise; "
+      raycaster="far: 1; objects: .raycastable"
+      info-message="htmlSrc: #instrucciones">
+      
+      <a-assets>
+        <template id="rig-template">
+          <a-entity></a-entity>
+        </template>
+        
+        <template id="head-template">
+          <a-entity class="avatar" player-info>
+            <a-sphere class="head" scale="0.2 0.22 0.2"></a-sphere>
+            <a-entity class="face" position="0 0.05 0">
+              <a-sphere class="eye" color="white" position="0.06 0.05 -0.16" scale="0.04 0.04 0.04">
+                <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+              </a-sphere>
+              <a-sphere class="eye" color="white" position="-0.06 0.05 -0.16" scale="0.04 0.04 0.04">
+                <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+              </a-sphere>
+            </a-entity>
+              <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
+              <a-text
+              class="nametag"
+              value="?"
+              rotation="0 180 0"
+              position=".25 -.35 0"
+              side="double"
+              scale=".5 .5 .5"
+              color="#000000"
+            ></a-text>
+
+          </a-entity>
+        </template>
+
+        <a-asset-item id="instrucciones" src="message.html"></a-asset-item>
+        <img id="textura-pared-laberinto" src="assets/muro.jpg" />
+        <img id="faro" src="assets/faro.png" />
+        <a-box
+          id="pared-laberinto"
+          static-body
+          material="src: #textura-pared-laberinto"
+          depth="1"
+          width="5"
+          height="7.5">
+        </a-box>
+        <a-mixin
+          id="cuponImage"
+          geometry="primitive: plane; width: 1.5; height: 0.81"
+          material="; shader: flat; transparent: true"
+          position="0 0.495 0.002"
+         ></a-mixin>
+      </a-assets>
+      
+      <a-entity id="rig" movement-controls="fly:true;" spawn-in-circle="radius:3" networked="template:#rig-template;">
+        <a-entity
+          id="player"
+          camera
+          position="0 1.6 0"
+          look-controls
+          networked="template:#head-template;"
+          visible="false"
+        ></a-entity>
+      <a-entity id="explorador"
+        camera
+        universal-controls
+        look-controls
+        position="0 10.8 35"
+        jump-ability
+        kinematic-body>
+        <a-cursor></a-cursor>
+      </a-entity>
+
+      <a-plane id="base"
+        static-body
+        rotation="-90 0 0"
+        position="0 10 35"
+        width="2"
+        height="2"
+        material="src: assets/base.png"
+      ></a-plane>
+
+      <a-plane id="piso-falso"
+        static-body
+        rotation="-90 0 0"
+        position="0 -0.1 0"
+        width="200"
+        height="200"
+      ></a-plane>
+
+      <a-entity
+        id="laberinto"
+        maze="size: 12 11 ; wall: #pared-laberinto;  open: S 9 3"
+        position="0 0 0"
+        rotation="0 0 0"
+      ></a-entity>
+      
+<!--cupon selector-->
+      <a-entity
+        id="background"
+        position="0 0 0"
+        geometry="primitive: sphere; radius: 2.0"
+        material="color: red; side: back; shader: flat"
+        scale="0.001 0.001 0.001"
+        visible="false" class="raycastable">
+      </a-entity>
+      
+      <a-entity position="2 2 0">
+        <a-entity
+          id="fadeBackground"
+          geometry="primitive: sphere; radius: 50"
+          material="color: black; side: back; shader: flat; transparent: true; opacity: 0.01" visible="false">
+        </a-entity>
+      </a-entity>
+
+      <!-- faro -->
+      <a-entity id="ui" position="0 0.8 0" >
+        
+        <a-entity id="menu" highlight>
+          <a-entity id="kazetachinuButton" class="raycastable menu-button" >
+            <a-box
+              id="faro"
+              material="src: #faro"
+              static-body
+              height="15"
+              position="0 0 0"
+              faro>
+            </a-box>
+          </a-entity>
+        </a-entity>
+
+        <a-entity
+          id="infoPanel">
+          <a-entity
+            position="0 0 1"
+            info-panel
+            visible="false"
+            scale="0.001 0.001 0.001"
+            geometry="primitive: plane; width: 1.5; "
+            material="color: #333333; shader: flat; transparent: false" class="raycastable" static-body>
+            <a-entity id="cuponTitle"
+              position="-0.68 0.1 0"
+              text="shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Cupon de 50% descuento"></a-entity>
+            <a-entity id="cuponDescription"
+              position="-0.68 0 0"
+              text="baseline: top; shader: msdf; anchor: left; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Tomale pantallazo a este cupon o anota el codigo de abajo y muestralo en la caja!"></a-entity>
+            <a-entity id="cuponCode"
+              position="-0.68 -0.2 0"
+              text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: CUPON50"></a-entity>
+          </a-entity>
+          <a-entity
+            rotation="0 90 0"
+            position="1 0 -0.1"
+            info-panel
+            visible="false"
+            scale="0.001 0.001 0.001"
+            geometry="primitive: plane; width: 1.5; "
+            material="color: #333333; shader: flat; transparent: false" class="raycastable" static-body>
+            <a-entity id="cuponTitle"
+              position="-0.68 0.1 0"
+              text="shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Cupon de 50% descuento"></a-entity>
+            <a-entity id="cuponDescription"
+              position="-0.68 0 0"
+              text="baseline: top; shader: msdf; anchor: left; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Tomale pantallazo a este cupon o anota el codigo de abajo y muestralo en la caja!"></a-entity>
+            <a-entity id="cuponCode"
+              position="-0.68 -0.2 0"
+              text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: CUPON50"></a-entity>
+          </a-entity>
+          <a-entity
+            rotation="0 180 0"
+            position="0 0 -1"
+            info-panel
+            visible="false"
+            scale="0.001 0.001 0.001"
+            geometry="primitive: plane; width: 1.5; "
+            material="color: #333333; shader: flat; transparent: false" class="raycastable" static-body>
+            <a-entity id="cuponTitle"
+              position="-0.68 0.1 0"
+              text="shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Cupon de 50% descuento"></a-entity>
+            <a-entity id="cuponDescription"
+              position="-0.68 0 0"
+              text="baseline: top; shader: msdf; anchor: left; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Tomale pantallazo a este cupon o anota el codigo de abajo y muestralo en la caja!"></a-entity>
+            <a-entity id="cuponCode"
+              position="-0.68 -0.2 0"
+              text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: CUPON50"></a-entity>
+          </a-entity>
+          <a-entity
+            rotation="0 270 0"
+            position="-1 0 -0.1"
+            info-panel
+            visible="false"
+            scale="0.001 0.001 0.001"
+            geometry="primitive: plane; width: 1.5; "
+            material="color: #333333; shader: flat; transparent: false" class="raycastable" static-body>
+            <a-entity id="cuponTitle"
+              position="-0.68 0.1 0"
+              text="shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Cupon de 50% descuento"></a-entity>
+            <a-entity id="cuponDescription"
+              position="-0.68 0 0"
+              text="baseline: top; shader: msdf; anchor: left; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Tomale pantallazo a este cupon o anota el codigo de abajo y muestralo en la caja!"></a-entity>
+            <a-entity id="cuponCode"
+              position="-0.68 -0.2 0"
+              text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: CUPON50"></a-entity>
+          </a-entity>
+          
+        </a-entity>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>

@@ -231,6 +231,41 @@ sudo firewall-cmd --reload
 
 
 ```
+### Create a custom NGINX configuration
+Para cambiar la ruta raíz de su servidor web, no edite el archivo /etc/nginx/nginx.conf directamente. En su lugar, como método preferido, cree una configuración específica del sitio en el directorio /etc/nginx/conf.d. Por ejemplo, cree el archivo /etc/nginx/conf.d/default.conf y complételo con una configuración para su sitio.
+```
+## Crear un directorio para alojar un nuevo sitio
+sudo mkdir /srv/website
+
+## Crear index.html dummy
+cat << EOF | sudo tee /srv/website/index.html
+<html>
+<head>
+<title>Hello</title>
+</head>
+<body><p>Hello World!</p></body>
+</html>
+EOF
+
+## Actualizar permisos
+sudo chown -R nginx:nginx /srv/website
+sudo chcon -Rt httpd_sys_content_t /srv/website
+
+## Crear configuración NGINX personalizada
+cat <<EOF | sudo tee /etc/nginx/conf.d/default.conf
+server {
+  server_name    <IP_address>;
+  root           /srv/website;
+  index          index.html;
+}
+EOF
+
+## reiniciar NGINX
+sudo systemctl restart nginx
+
+## Para depurar y ver problemas de conexión siguiendo los archivos de registro
+sudo tail -f /var/log/nginx/access.log -f /var/log/nginx/error.log
+```
 #### Configuración HTTPS
 
 Esto es necesario para usar Aframe en modo VR/AR y tener acceso a los sensores del dispositivo.
@@ -345,6 +380,13 @@ sudo dnf install git
 
 ```
 
+Cree un directorio 
+
+```
+## Crear un directorio para alojar un nuevo sitio
+sudo mkdir /srv/website
+```
+
 Elimine los archivos  dummy
 
 /srv/website
@@ -370,7 +412,11 @@ sudo git clone https://github.com/santiago990208/FoodVerse.git .
 ## Configurar servidor Multiusuario
 1. Proceder a instalar npm 
 ```
-npm install -g npm
+sudo yum install epel-release
+sudo yum install npm # also installs nodejs
+
+###Para verificar
+npm --version
 ```
 2. Acceder a la carpeta del repositorio
 ```
@@ -378,12 +424,12 @@ cd /srv/website/FoodVerse
 ```
 3. Correr el siguiente comando para instalar todas las dependencias.
 ```
-npm install
+sudo npm install
 ```
 Esto tomara un par de minutos.
 4. Correr el siguiente comando para iniciar el servidor.
 ```
-npm install
+sudo npm start
 ```
 ## Probar
 Asegurese que todo funciona correctamente conectándoselo a:

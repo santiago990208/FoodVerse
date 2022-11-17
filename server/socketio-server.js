@@ -7,7 +7,7 @@ const express = require("express"); // web framework external module
 process.title = "networked-aframe-server";
 
 // Get port or default to 8080
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 
 // Setup and configure Express http server.
 const app = express();

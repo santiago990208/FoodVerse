@@ -388,15 +388,9 @@ sudo mkdir /srv/website
 ```
 
 Elimine los archivos  dummy
-
-/srv/website
-
 ```
-
 cd /srv/website/
-
 sudo rm index.html
-
 ```
 
 Clone nuestra habitación del metaverso desde Github
@@ -407,29 +401,6 @@ Clone nuestra habitación del metaverso desde Github
 
 sudo git clone https://github.com/santiago990208/FoodVerse.git .
 
-```
-
-## Configurar servidor Multiusuario
-1. Proceder a instalar npm 
-```
-sudo yum install epel-release
-sudo yum install npm # also installs nodejs
-
-###Para verificar
-npm --version
-```
-2. Acceder a la carpeta del repositorio
-```
-cd /srv/website/FoodVerse
-```
-3. Correr el siguiente comando para instalar todas las dependencias.
-```
-sudo npm install
-```
-Esto tomara un par de minutos.
-4. Correr el siguiente comando para iniciar el servidor.
-```
-sudo npm start
 ```
 ## Probar
 Asegurese que todo funciona correctamente conectándoselo a:

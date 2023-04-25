@@ -63,13 +63,13 @@
       <a-mixin id="barra-mesa" geometry="primitive: box; width: 3.4; height: 0.01; depth: 0.8;" static-body ></a-mixin>
       <a-mixin id="techo" geometry="primitive: box; width: 7; height: 0.01; depth: 13;" static-body ></a-mixin>
 
-      <a-mixin id="menu" geometry="primitive: box; width: 3; height: 2; depth: 0.01;"  ></a-mixin>
-      <a-mixin id="border-menu" geometry="primitive: box; width: 3.1; height: 2.1; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="menu" geometry="primitive: box; width: 1.6; height: 2.6; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-menu" geometry="primitive: box; width: 1.8; height: 2.8; depth: 0.01;"  ></a-mixin>
 
-      <a-mixin id="cuadro1" geometry="primitive: box; width: 1.5; height: 2; depth: 0.01;"  ></a-mixin>
-      <a-mixin id="border-cuadro1" geometry="primitive: box; width: 1.6; height: 2.1; depth: 0.01;"  ></a-mixin>
-      <a-mixin id="cuadro2" geometry="primitive: box; width: 2; height: 1.5; depth: 0.01;"  ></a-mixin>
-      <a-mixin id="border-cuadro2" geometry="primitive: box; width: 2.1; height: 1.6; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="cuadro1" geometry="primitive: box; width: 2; height: 1; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-cuadro1" geometry="primitive: box; width: 2.3; height: 1.3; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="cuadro2" geometry="primitive: box; width: 2; height: 1; depth: 0.01;"  ></a-mixin>
+      <a-mixin id="border-cuadro2" geometry="primitive: box; width: 2.3; height: 1.3; depth: 0.01;"  ></a-mixin>
       <a-mixin id="pelota" geometry="primitive: sphere; radius: 0.4"></a-mixin>
       
       <a-mixin id="techos" material="src: #src-techo"></a-mixin>
@@ -187,8 +187,8 @@
       
       <a-entity id="pared-cuadro" mixin="pared paredes"  position="3.1 0 4.2"></a-entity>
         <!-- cuadros -->
-        <a-entity mixin="cuadro1 img-cuadro1"  position="4.6 2.5 4"></a-entity>
-        <a-entity mixin="border-cuadro1 borders"  position="4.6 2.5 4.1"></a-entity>
+        <a-entity mixin="cuadro1 img-cuadro1"  position="4 2.5 4"></a-entity>
+        <a-entity mixin="border-cuadro1 borders"  position="4 2.5 4.1"></a-entity>
         <a-entity mixin="cuadro2 img-cuadro2"  position="2 1.5 4"></a-entity>
         <a-entity mixin="border-cuadro2 borders"  position="2 1.5 4.1"></a-entity>
 
@@ -198,7 +198,7 @@
         <a-entity mixin="border-menu borders"  position="1 2.5 -4.1"></a-entity>
 
         <!-- Logos -->
-        <a-image src="#src-logo" scale="3 3 3" rotation="0 180 0" position="-0.4 2 4.6"></a-image>
+        <a-image src="#src-logo" scale="3 3 3" rotation="0 360 0" position="3 2 4.5"></a-image>
 
 
       <!-- Techo -->
@@ -244,6 +244,10 @@
       <a-entity mixin="palmeras" position="-14 0 6" scale="4 4 4"></a-entity>
       <a-entity mixin="palmeras" position="-16 0 8" scale="4 4 4"></a-entity>
       <a-entity mixin="palmeras" position="-17 0 10" scale="4 4 4"></a-entity>
+
+      <a-entity mixin="palmeras" position="-14 0 12" scale="4 4 4"></a-entity>
+      <a-entity mixin="palmeras" position="-12 0 10" scale="4 4 4"></a-entity>
+      <a-entity mixin="palmeras" position="-10 0 8" scale="4 4 4"></a-entity>
 
       <a-entity mixin="palmeras" position="10 0 0" scale="4 4 4"></a-entity>
       <a-entity mixin="palmeras" position="8 0 1" scale="4 4 4"></a-entity>
@@ -292,11 +296,11 @@
       <a-link href="tesoro/" 
         scale="2 2 2" 
         position="25 2.5 -6" 
-        rotation="0 -80 0"
-        image="#thumbTesoro" 
+        rotation="0 -75 0"
+        image="#thumbTesoro"; scale="0.5 0.5 0.5"
         backgroundColor="#25e9f4" 
         borderColor="#2596be" 
-        title="Busqueda del Tesoro"
+        title="Treasure Hunt"
         titleColor="black"
         peekMode="true"
       ></a-link>

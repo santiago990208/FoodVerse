@@ -15,14 +15,8 @@
     raycaster="far: 100; objects: [link];">
       <a-assets>
         <a-asset-item id="sushi" src="sushi.glb"></a-asset-item>
-        <img id="sushi-name" src="sushi-name.png">
-        <img id="descripcion-sushi" src="descripcion-sushi.png">
-        <a-asset-item id="tartar" src="tartar1.glb"></a-asset-item>
-        <img id="tartar-name" src="tartar-name.png">
-        <img id="descripcion-tartar" src="descripcion-tartar.png">
+        <a-asset-item id="tartar" src="tartar.glb"></a-asset-item>
         <a-asset-item id="tarta" src="tarta.glb"></a-asset-item>
-        <img id="tarta-name" src="tarta-name.png">
-        <img id="descripcion-tarta" src="descripcion-tarta.png">
         <img id="logo" src="logo.png">
         <img id="shadow2" src="radial-shadow-2.png">
       </a-assets>
@@ -46,9 +40,9 @@
       <a-cylinder position="0 0.5 0" radius="4.5" height="1.6" side="back" open-ended="true" color="#FFF"></a-cylinder>
 
       <!--Tartar-->
-      <a-entity id="model-tartar" position="0 0 -3" animation="property: rotation; from: 0 -115 0; to: 0 245 0; dur: 15000; easing: linear; loop: true">
-        <a-gltf-model position="2 0 4'" rotation="-90 0 0" scale="3 3 3" src="#tartar"></a-gltf-model>   
-        <a-image src="#shadow2" rotation="-90 0 0" scale="0.5 0.5 0.5"></a-image>
+      <a-entity id="model-tartar" position="0 0 -3" animation="property: rotation; from: 0 -10 0; to: 0 25 0; dur: 15000; easing: linear; loop: true">
+        <a-gltf-model position="4 1 4'" rotation="15 -100 0" scale="3 3 3" src="#tartar"></a-gltf-model>   
+        <a-image src="#shadow2" rotation="0 0 0" scale="0.5 0.5 0.5"></a-image>
       </a-entity>
 
       <!--Tarta-->

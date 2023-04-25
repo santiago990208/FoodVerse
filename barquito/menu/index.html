@@ -39,55 +39,23 @@
         </a-entity>
 
       <!--sushi-->
-      <a-entity id="model" position="0 0 -3" animation="property: rotation; from: 0 -30 0; to: 0 330 0; dur: 15000; easing: linear; loop: true">
-        <a-gltf-model position="-.35 0 .55" rotation="0 -2 0" scale="7 7 7" src="#sushi"></a-gltf-model>
-        <a-image src="#shadow2" rotation="-90 0 0" scale="0.5 0.5 0.5"></a-image>
+      <a-entity id="model" position="0 0 -3" animation="property: rotation; from: 0 -30 0; to: 0 100 0; dur: 15000; easing: linear; loop: true">
+        <a-gltf-model position="0 1 0" rotation="15 0 0" scale="3 3 3" src="#sushi"></a-gltf-model>
       </a-entity>
-
-      <a-entity id="precios-sushi" text="width: 7; height: 7 ;color: black; value: $12" 
-               animation="property: position; from: 0 2.8 -6; to: 3.5 2.8 -6; delay: 1000; dur: 1000"></a-entity>
-
-      <a-curvedimage id="stereoscopic-sushi-name-collection-text" src="#sushi-name" radius="6"
-                     theta-length="18" height=".45" position="0 0.9 0" scale=".4 .4 .4"
-                     animation="property: rotation; from: 0 180 0; to: 0 210 0; delay: 750; dur: 1000"></a-curvedimage>
-
-      <a-curvedimage id="descripcion-sushi" src="#descripcion-sushi" radius="5.7" theta-length="18" height=".8" position="0 0.9 0" scale=".4 .4 .4"
-                     animation="property: rotation; from: 0 180 0; to: 0 130 0; delay: 750; dur: 1000"></a-curvedimage>
 
       <a-cylinder position="0 0.5 0" radius="4.5" height="1.6" side="back" open-ended="true" color="#FFF"></a-cylinder>
 
       <!--Tartar-->
-      <a-entity id="model" position="0 0 -3" >
-        <a-gltf-model position="2 0 4" animation="property: rotation; from: 0 -115 0; to: 0 245 0; dur: 15000; easing: linear; loop: true" scale="7 7 7" src="#tartar"></a-gltf-model>
+      <a-entity id="model-tartar" position="0 0 -3" animation="property: rotation; from: 0 -115 0; to: 0 245 0; dur: 15000; easing: linear; loop: true">
+        <a-gltf-model position="2 0 4'" rotation="-90 0 0" scale="3 3 3" src="#tartar"></a-gltf-model>   
         <a-image src="#shadow2" rotation="-90 0 0" scale="0.5 0.5 0.5"></a-image>
       </a-entity>
 
-      
-      <a-entity id="precios-tartar" text="width: 7; height: 7 ;color: black; value: $15"  rotation="0 -120 0"
-               animation="property: position; from: 3 2.8 -2; to: 5 2.8 6; delay: 1000; dur: 1000"></a-entity>
-       
-      <a-curvedimage id="stereoscopic-tartar-name-collection-text" src="#tartar-name" radius="6"
-                     theta-length="18" height=".45" position="0 0.9 0" scale=".4 .4 .4"
-                     animation="property: rotation; from: 0 180 0; to: 0 90 0; delay: 750; dur: 1000"></a-curvedimage>
-         
-      <a-curvedimage  src="#descripcion-tartar" radius="5.7" theta-length="18" height=".8" position="0 0.9 0" scale=".4 .4 .4"
-                     animation="property: rotation; from: 0 180 0; to: 0 10 0; delay: 750; dur: 1000"></a-curvedimage>   
-      <!--tarta-->
-      <a-entity id="model-tarta" position="0 0 -3" >
-        <a-gltf-model position="-2 0 4" animation="property: rotation; from: 0 -250 0; to: 0 110 0; dur: 15000; easing: linear; loop: true" scale="0.05 0.05 0.05" src="#tarta"></a-gltf-model>
-        <a-image src="#shadow2" rotation="-90 0 0" scale="0.5 0.5 0.5"></a-image>
+      <!--Tarta-->
+      <a-entity id="model-tarta" position="0 0 -3" animation="property: rotation; from: 0 -20 0; to: 0 15 0; dur: 15000; easing: linear; loop: true">
+        <a-gltf-model position="-3 1 5'" rotation="15 115 0" scale="3 3 3" src="#tarta"></a-gltf-model>
       </a-entity>
-
-     
-      <a-entity id="precios-tarta" text="width: 7; height: 7 ;color: black; value: $3"  rotation="0 90 0"
-               animation="property: position; from: 3 2.8 -2; to: -8 2.8 0; delay: 1000; dur: 1000"></a-entity>
-      
-      <a-curvedimage id="stereoscopic-tarta-name-collection-text" src="#tarta-name" radius="6"
-                     theta-length="18" height=".45" position="0 0.9 0" scale=".4 .4 .4"
-                     animation="property: rotation; from: 0 180 0; to: 0 310 0; delay: 750; dur: 1000"></a-curvedimage>     
-                     
-      <a-curvedimage id="descripcion-tartas" src="#descripcion-tarta" radius="5.7" theta-length="18" height=".8" position="0 0.9 0" scale=".4 .4 .4"
-                     animation="property: rotation; from: 0 180 0; to: 0 250 0; delay: 750; dur: 1000"></a-curvedimage>               
+            
 
       <a-light type="directional" color="#fff" intensity="0.2" position="-1 2 1"></a-light>
       <a-light type="ambient" color="#fff"></a-light>

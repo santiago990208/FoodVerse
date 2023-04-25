@@ -37,6 +37,7 @@
       <a-asset-item id="butaco" src="assets/butaco.glb"></a-asset-item>
 
       <img id="src-camino" src="assets/piso.png" />
+      <img id="camino" src="assets/Camino2.png" />
       <img id="arena" src="assets/arena.jpeg" />
       <img id="cielo" src="assets/cielo.jpeg" />
       <img id="pared-este" src="assets/pared-este.jpeg" />
@@ -95,8 +96,8 @@
     
       <a-entity camera look-controls universal-controls jump-ability kinematic-body position="-10 2 3" scale="0.5 0.5 0.5">
         <a-entity position="0 0 -0.5"
-                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-                  material="color: black; shader: flat"
+                  geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.010"
+                  material="color: gray; shader: flat"
                   cursor="rayOrigin: mouse">
           <a-animation begin="click" easing="ease-in" attribute="scale"
                fill="forwards" from="0.2 0.2 0.2" to="1 1 1" dur="150"></a-animation>
@@ -197,7 +198,7 @@
         <a-entity mixin="border-menu borders"  position="1 2.5 -4.1"></a-entity>
 
         <!-- Logos -->
-        <a-image src="#src-logo" scale="3 3 3" rotation="0 180 0" position="-0.4 2 -4.6"></a-image>
+        <a-image src="#src-logo" scale="3 3 3" rotation="0 180 0" position="-0.4 2 4.6"></a-image>
 
 
       <!-- Techo -->
@@ -220,11 +221,12 @@
       <!-- Piso restaurante -->
       <a-plane id="piso-restaurante"
       rotation="-90 0 0"
-      position="2.7 0.1 2"
+      position="2.7 0.01 2"
       width="32"
       height="16"
       src="#src-camino"
       ></a-plane>
+
 
       <!-- Tablas surf -->
       <a-entity mixin="tablas" position="30 0 -14" scale="1 1.4 1"static-body></a-entity>
@@ -243,32 +245,40 @@
       <a-entity mixin="palmeras" position="40 0 3" scale="11 11 11"></a-entity>
       <a-entity mixin="palmeras" position="40 0 9" scale="9 9 9"></a-entity>
 
-      <a-entity mixin="palmeras" position="-40 0 -15" scale="10 15 10"></a-entity>
-      <a-entity mixin="palmeras" position="-35 0 -13" scale="10 10 10"></a-entity>
-      <a-entity mixin="palmeras" position="-38 0 -11" scale="10 13 10"></a-entity>
-      <a-entity mixin="palmeras" position="-40 0 -9" scale="8 8 8"></a-entity>
-      <a-entity mixin="palmeras" position="-35 0 -6" scale="8 12 8"></a-entity>
-      <a-entity mixin="palmeras" position="-37 0 -4" scale="10 10 10"></a-entity>
-      <a-entity mixin="palmeras" position="-40 0 -2" scale="7 14 7"></a-entity>
+      <a-entity mixin="palmeras" position="-40 0 -19" scale="10 15 10"></a-entity>
+      <a-entity mixin="palmeras" position="-45 0 -16" scale="10 10 10"></a-entity>
+      <a-entity mixin="palmeras" position="-39 0 -13" scale="10 13 10"></a-entity>
+      <a-entity mixin="palmeras" position="-42 0 -10" scale="8 8 8"></a-entity>
+      <a-entity mixin="palmeras" position="-46 0 -7" scale="8 12 8"></a-entity>
+      <a-entity mixin="palmeras" position="-42 0 -3" scale="10 10 10"></a-entity>
       <a-entity mixin="palmeras" position="-38 0 0" scale="9 9 9"></a-entity>
-      <a-entity mixin="palmeras" position="-35 0 1.5" scale="8 8 8"></a-entity>
-      <a-entity mixin="palmeras" position="-40 0 3" scale="10 12 10"></a-entity>
-      <a-entity mixin="palmeras" position="-38 0 6" scale="10 15 10"></a-entity>
+      <a-entity mixin="palmeras" position="-40 0 3" scale="10 8 10"></a-entity>
+      <a-entity mixin="palmeras" position="-38 0 6" scale="10 14 10"></a-entity>
       <a-entity mixin="palmeras" position="-37 0 9" scale="9 11 9"></a-entity>
-      <a-entity mixin="palmeras" position="-40 0 12" scale="9 9 9"></a-entity>
-      <a-entity mixin="palmeras" position="-38 0 14" scale="11 13 11"></a-entity>
-      <a-entity mixin="palmeras" position="-42 0 16" scale="11 12 11"></a-entity>
+      <a-entity mixin="palmeras" position="-42 0 12" scale="9 9 9"></a-entity>
+      <a-entity mixin="palmeras" position="-39 0 16" scale="11 9 11"></a-entity>
+      <a-entity mixin="palmeras" position="-45 0 20" scale="11 12 11"></a-entity>
 
-      <a-entity mixin="palmeras" position="35 0 30" scale="9 9 9"></a-entity>
-      <a-entity mixin="palmeras" position="25 0 30" scale="11 11 11"></a-entity>
-      <a-entity mixin="palmeras" position="17 0 30" scale="10 10.5 10"></a-entity>
-      <a-entity mixin="palmeras" position="10 0 30" scale="8 8 8"></a-entity>
+      <a-entity mixin="palmeras" position="35 0 50" scale="9 9 9"></a-entity>
+      <a-entity mixin="palmeras" position="25 0 50" scale="11 11 11"></a-entity>
+      <a-entity mixin="palmeras" position="17 0 50" scale="10 10.5 10"></a-entity>
+      <a-entity mixin="palmeras" position="10 0 50" scale="8 8 8"></a-entity>
 
        <!-- mesas afuera -->
-       <a-entity mixin="mesas-sombrilla" position="8.8 0 -4" scale="0.5 0.5 0.5" ></a-entity>
-       <a-entity mixin="mesas-sombrilla" position="8.8 0 4" scale="0.5 0.5 0.5" ></a-entity>
-       <a-entity mixin="mesas-sombrilla" position="-6.5 0 -3" scale="0.5 0.5 0.5" ></a-entity>
-       <a-entity mixin="mesas-sombrilla" position="-6.2 0 6" scale="0.5 0.5 0.5" ></a-entity>
+       <a-entity mixin="mesas-sombrilla" position="8.8 0 -4" scale="0.5 0.45 0.5" ></a-entity>
+       <a-entity mixin="mesas-madera" static-body position="8.8 0.4 -4" rotation="0 90 0" scale="0.35 0.35 0.35" ></a-entity>
+       <a-entity mixin="mesas-sombrilla" position="8.8 0 4" scale="0.5 0.45 0.5" ></a-entity>
+       <a-entity mixin="mesas-madera" static-body position="8.8 .4 4" rotation="0 90 0" scale="0.35 0.35 0.35" ></a-entity>
+       <a-entity mixin="mesas-sombrilla" position="-2 0 8" scale="0.5 0.45 0.5" ></a-entity>
+       <a-entity mixin="mesas-madera" static-body position="-2 .4 8" rotation="0 180 0" scale="0.35 0.35 0.35" ></a-entity>
+       <a-entity mixin="mesas-sombrilla" position="2 0 8" scale="0.5 0.45 0.5" ></a-entity>
+       <a-entity mixin="mesas-madera" static-body position="2 .4 8" rotation="0 180 0" scale="0.35 0.35 0.35" ></a-entity>
+       <a-entity mixin="mesas-sombrilla" position="6 0 8" scale="0.5 0.45 0.5" ></a-entity>
+       <a-entity mixin="mesas-madera" static-body position="6 .4 8" rotation="0 180 0" scale="0.35 0.35 0.35" ></a-entity>
+
+       <a-entity mixin="mesas-sombrilla" position="-6 0 -3" scale="0.5 0.45 0.5" ></a-entity>
+       <a-entity mixin="mesas-madera" static-body position="-6 .4 -3" rotation="0 90 0" scale="0.35 0.35 0.35" ></a-entity>
+       
 
        <!-- mesa adentro -->
        <a-entity mixin="mesas-madera" static-body position="-1.1 .4 3" rotation="0 180 0" scale="0.32 0.32 0.32" ></a-entity>

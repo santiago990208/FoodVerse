@@ -7,7 +7,6 @@
     <meta name="description" content="FoodVerse">
     <meta name="author" content="Santiago Botero">
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
   </head>
   <body>
     <a-scene background="color: #ECECEC" renderer="colorManagement: true;"
@@ -22,34 +21,24 @@
       </a-assets>
       <!-- Camera -->
       <a-entity camera look-controls  position="0 1 0">
-          <a-entity position="0 0 -0.5"
-                    geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-                    material="color: black; shader: flat"
-                    cursor="rayOrigin: mouse">
-            <a-animation begin="click" easing="ease-in" attribute="scale"
-                 fill="forwards" from="0.2 0.2 0.2" to="1 1 1" dur="150"></a-animation>
+        <a-entity position="0 0 -0.5"
+                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                  material="color: black; shader: flat"
+                  cursor="rayOrigin: mouse">
+          <a-animation begin="click" easing="ease-in" attribute="scale"
+               fill="forwards" from="0.2 0.2 0.2" to="1 1 1" dur="150"></a-animation>
   
-          </a-entity>
         </a-entity>
-
-      <!--sushi-->
-      <a-entity id="model" position="0 0 -3" animation="property: rotation; from: 0 -30 0; to: 0 100 0; dur: 15000; easing: linear; loop: true">
-        <a-gltf-model position="0 1 0" rotation="15 0 0" scale="3 3 3" src="#sushi"></a-gltf-model>
       </a-entity>
 
+      <!-- Piso -->
       <a-cylinder position="0 0.5 0" radius="4.5" height="1.6" side="back" open-ended="true" color="#FFF"></a-cylinder>
 
-      <!--Tartar-->
-      <a-entity id="model-tartar" position="0 0 -3" animation="property: rotation; from: 0 -10 0; to: 0 25 0; dur: 15000; easing: linear; loop: true">
-        <a-gltf-model position="4 1 4'" rotation="15 -100 0" scale="3 3 3" src="#tartar"></a-gltf-model>   
-        <a-image src="#shadow2" rotation="0 0 0" scale="0.5 0.5 0.5"></a-image>
+      <a-entity id="show-menu" position="0 0 -3" >
+        <a-gltf-model position="0 1 0" rotation="45 0 0" scale="3 3 3" src="#sushi"></a-gltf-model>
+        <a-gltf-model position="4.5 1 4.5'" rotation="30 -100 0" scale="3 3 3" src="#tartar"></a-gltf-model>
+        <a-gltf-model position="-3.7 1 4.5'" rotation="35 100 0" scale="3 3 3" src="#tarta"></a-gltf-model>
       </a-entity>
-
-      <!--Tarta-->
-      <a-entity id="model-tarta" position="0 0 -3" animation="property: rotation; from: 0 -20 0; to: 0 15 0; dur: 15000; easing: linear; loop: true">
-        <a-gltf-model position="-3 1 5'" rotation="15 115 0" scale="3 3 3" src="#tarta"></a-gltf-model>
-      </a-entity>
-            
 
       <a-light type="directional" color="#fff" intensity="0.2" position="-1 2 1"></a-light>
       <a-light type="ambient" color="#fff"></a-light>
